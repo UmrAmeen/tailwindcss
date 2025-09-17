@@ -27,7 +27,7 @@ export default function NewProductForm({ categoryRows, Images }: any) {
       {state.success ? <div> Success</div> : <div>{state.error}</div>}
       <form
         action={formAction}
-        className="space-y-6   mx-auto p-6 bg-gray-500 rounded-lg "
+        className="space-y-6 ml-1 mt-5 mx-auto p-6 bg-gray-500 rounded-lg "
       >
         <label className="block text-lg font-bold text-gray-900 mb-1">
           Name
