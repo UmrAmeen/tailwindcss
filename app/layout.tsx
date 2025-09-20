@@ -1,4 +1,4 @@
-// app/layout.tsx or app/layout.js
+import CartButton from "./cartButton";
 import "./globals.css";
 import SideBar from "./sidebar";
 
@@ -9,12 +9,17 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
-        <div className="flex">
-          <div className="w-54 h-screen bg-gray-600 text-white top-0 left-0 ">
+      <body className="h-screen flex flex-col">
+        <div>
+          <CartButton />
+        </div>
+
+        <div className="flex flex-1">
+          <div className="w-54 bg-gray-600 text-white h-full">
             <SideBar />
           </div>
-          <main>{children}</main>
+
+          <main className="flex-1 p-1 overflow-auto">{children}</main>
         </div>
       </body>
     </html>
