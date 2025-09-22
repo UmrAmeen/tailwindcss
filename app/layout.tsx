@@ -1,6 +1,7 @@
-import CartButton from "./cartButton";
+
 import "./globals.css";
 import SideBar from "./sidebar";
+import NavBar from "./navBar";
 
 export default function RootLayout({
   children,
@@ -11,11 +12,11 @@ export default function RootLayout({
     <html lang="en">
       <body className="h-screen flex flex-col">
         <div>
-          <CartButton />
+          <NavBar />
         </div>
 
         <div className="flex flex-1">
-          <div className="w-54 bg-gray-600 text-white h-full">
+          <div className="w-54 bg-gray-600 text-white h-full rounded-lg">
             <SideBar />
           </div>
 

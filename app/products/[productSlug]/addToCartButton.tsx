@@ -15,7 +15,7 @@ export default function AddToCartButton({
   const [status, setStatus] = useState("");
 
   const handleIncrease = () => {
-    setQuantity((prev) => prev + 1);
+    setQuantity((quantity) => quantity + 1);
   };
 
   const handleAddToCart = async () => {
@@ -32,7 +32,7 @@ export default function AddToCartButton({
       <button
         onClick={handleIncrease}
         disabled={loading}
-        className="px-3 py-2 bg-green-600 text-white rounded hover:bg-green-700 disabled:opacity-50"
+        className="px-3 py-2 bg-gray-900 text-white rounded hover:bg-gray-700 disabled:opacity-50"
       >
         +
       </button>
@@ -40,7 +40,7 @@ export default function AddToCartButton({
       <button
         onClick={handleAddToCart}
         disabled={loading}
-        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
+        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-800 disabled:opacity-50"
       >
         {loading ? "Submitting..." : "Add to Cart"}
       </button>
