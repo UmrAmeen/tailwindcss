@@ -54,15 +54,15 @@ export default function ShoppingCart({ products }: any) {
     .toFixed(2);
 
   return (
-    <div className="p-6 max-w-4xl mx-auto bg-gray-800">
-      <h1 className="text-3xl font-bold mb-6 text-red-700">🛒 Shopping Cart</h1>
+    <div className="p-6 max-w-4xl mx-auto bg-gray-100">
+      <h1 className="text-3xl font-bold mb-6 text-red-700 text-center">🛒 Shopping Cart</h1>
 
       <section className="mb-10 ">
         <h2 className="text-2xl font-semibold mb-4">Products</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 ">
-          {products.map((product: RowType) => (
+          {products.map((product:any,index:any) => (
             <div
-              key={product.id}
+               key={`${product.id}-${index}`}
               className="border rounded-lg p-4 flex flex-col items-center shadow-sm bg-green-400"
             >
               <img
@@ -90,12 +90,12 @@ export default function ShoppingCart({ products }: any) {
       <section>
         <h2 className="text-2xl font-semibold mb-4">Cart</h2>
         {cart.length === 0 ? (
-          <p className="text-gray-500">Cart is empty.</p>
+          <p className="text-gray-900">Cart is empty.</p>
         ) : (
           <ul className="space-y-4">
-            {cart.map((item) => (
+            {cart.map((item,index) => (
               <li
-                key={item.id}
+               key={`${item.id}-${index}`}
                 className="flex items-center justify-between border-b pb-2"
               >
                 <div>
