@@ -29,3 +29,22 @@ export async function getCartQuantity(productId: number) {
 
   return item ? item.quantity : 0;
 }
+
+
+export async function buyCartItems(cart: any[]) {
+  const insert = db.prepare(`
+    INSERT INTO orders (product_id, quantity, total_price)
+    VALUES (?, ?, ?)
+  `);
+
+  const insertItem = db.transaction((items: any[]) => {
+    items.map(item =>
+      insert.run(item.id, item.qty, item.price * item.qty)
+    );
+  });
+
+  insertItem(cart);
+
+  return { success: true, message: "Items purchased successfully." };
+}
+

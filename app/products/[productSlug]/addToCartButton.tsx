@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { addToCart } from "./addtocart";
+import { addToCart } from "../addtocart";
 
 export default function AddToCartButton({
   productId,
@@ -10,7 +10,7 @@ export default function AddToCartButton({
   productId: number;
   cartQuantity: number;
 }) {
-  const [quantity, setQuantity] = useState( cartQuantity || 1);
+  const [quantity, setQuantity] = useState(cartQuantity || 1);
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState("");
 
@@ -20,8 +20,8 @@ export default function AddToCartButton({
 
   const handleAddToCart = async () => {
     setLoading(true);
-    const res = await addToCart(productId, quantity);
-    setStatus(res.success ? " Cart updated" : " Error");
+    const result = await addToCart(productId, quantity);
+    setStatus(result.success ? " Cart updated" : " Error");
     setLoading(false);
   };
 

@@ -1,6 +1,6 @@
 import db from "@/app/lib/sqlite/db";
 import ProductIdCard from "../productIdCard";
-import { getCartQuantity } from "./addtocart";
+import { getCartQuantity } from "../addtocart";
 export default async function ProductId({ params }: { params: any }) {
   const productSlug = (await params).productSlug;
 
