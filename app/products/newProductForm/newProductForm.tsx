@@ -27,7 +27,7 @@ export default function NewProductForm({ categoryRows, Images }: any) {
       {state.success ? <div> Success</div> : <div>{state.error}</div>}
       <form
         action={formAction}
-        className="space-y-6 ml-1 mt-5 mx-auto p-6 bg-gray-500 rounded-lg "
+        className=" ml-1 mt-5  max-w-xl mx-auto p-6 bg-gray-400 rounded-lg "
       >
         <label className="block text-lg font-bold text-gray-900 mb-1">
           Name
@@ -35,7 +35,7 @@ export default function NewProductForm({ categoryRows, Images }: any) {
             name="name"
             value={name}
             onChange={handleNameChange}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-200"
+            className="w-full px-4 py-2 border border-gray-700 rounded-md focus:ring focus:ring-blue-200"
           />
         </label>
 
@@ -47,7 +47,7 @@ export default function NewProductForm({ categoryRows, Images }: any) {
               value={slug}
               onChange={handleSlugChange}
               readOnly={!editSlug}
-              className={`flex-1 px-4 py-2 border ${
+              className={`flex-1 px-4 py-2 border border-gray- ${
                 editSlug ? "border-blue-400" : "border-gray-300"
               } rounded-md focus:ring focus:ring-blue-200`}
             />
@@ -70,7 +70,7 @@ export default function NewProductForm({ categoryRows, Images }: any) {
           Category
           <select
             name="categoryId"
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-200"
+            className="w-full px-4 py-2 border border-gray-700 rounded-md focus:ring focus:ring-blue-200"
           >
             {categoryRows?.map((row: any) => (
               <option key={row.id} value={row.id}>
@@ -87,7 +87,7 @@ export default function NewProductForm({ categoryRows, Images }: any) {
             name="price"
             placeholder="Price"
             required
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-200"
+            className="w-full px-4 py-2 border border-gray-700 rounded-md focus:ring focus:ring-blue-200"
           />
         </label>
 
@@ -98,14 +98,14 @@ export default function NewProductForm({ categoryRows, Images }: any) {
             name="description"
             placeholder="Add description"
             required
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-200"
+            className="w-full px-4 py-2 border border-gray-700 rounded-md focus:ring focus:ring-blue-200"
           />
         </label>
 
         <div className="pt-4">
           <button
             type="submit"
-            className="w-full bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700 transition"
+            className="w-full bg-green-900 text-white py-2 px-4 rounded hover:bg-green-700 transition"
             disabled={isPending}
           >
             {isPending ? "Submitting..." : "Submit"}

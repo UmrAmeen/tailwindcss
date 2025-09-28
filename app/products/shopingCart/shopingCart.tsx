@@ -68,7 +68,7 @@ export default function ShoppingCart({ products }: any) {
               <img
                 src={product.base64Image}
                 alt={product.name}
-                className="w-24 h-24 object-cover mb-4"
+                className="w-44 h-44 object-cover mb-4"
               />
               <div className="text-center">
                 <p className="font-semibold">{product.name}</p>
