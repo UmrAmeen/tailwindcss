@@ -8,13 +8,12 @@ export async function addItem(cartId: number) {
   );
 }
 
-export async function subItem(cartId: number) {
-  const current = db
+export async function decreaseItem(cartId: number) {
+  const { quantity } = db
     .prepare("SELECT quantity FROM cart WHERE id = ?")
-    .get(cartId) as { quantity: number };
-  if (current.quantity <= 1) {
-    db.prepare("DELETE FROM cart WHERE id = ?").run(cartId);
-  } else {
+    .get(cartId);
+
+  if (quantity > 1) {
     db.prepare("UPDATE cart SET quantity = quantity - 1 WHERE id = ?").run(
       cartId
     );
@@ -36,6 +35,8 @@ export async function buyCart(cart: any[]) {
   });
 
   insertItem(cart);
+
   db.prepare("DELETE FROM cart").run();
+
   return { success: true, message: "Items purchased successfully." };
 }

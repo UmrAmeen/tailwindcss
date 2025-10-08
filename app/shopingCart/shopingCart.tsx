@@ -1,7 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { addItem, buyCart, removeItem, subItem } from "../shopingCartAction";
+import {
+  addItem,
+  buyCart,
+  removeItem,
+  decreaseItem,
+} from "../shopingCartAction";
 
 interface RowType {
   [key: string]: any;
@@ -25,14 +30,12 @@ export default function ShoppingCart({ initialCart }: any) {
     updateCartItem(id, currentQty + 1);
   };
 
-  const handleSub = async (id: number) => {
+  const handleDecrease = async (id: number) => {
     const currentQty = cart.find((i: RowType) => i.id === id)?.quantity || 0;
-    if (currentQty <= 1) {
-      await handleRemove(id);
-    } else {
-      await subItem(id);
-      updateCartItem(id, currentQty - 1);
-    }
+    if (currentQty <= 1) return;
+
+    await decreaseItem(id);
+    updateCartItem(id, currentQty - 1);
   };
 
   const handleRemove = async (id: number) => {
@@ -84,15 +87,20 @@ export default function ShoppingCart({ initialCart }: any) {
 
                   <div className="flex items-center mt-1 gap-2">
                     <button
-                      onClick={() => handleSub(item.id)}
-                      className="px-2 py-1 border rounded text-sm"
+                      onClick={() => handleDecrease(item.id)}
+                      className={`px-2 py-1 border rounded text-sm ${
+                        item.quantity <= 1
+                          ? "bg-gray-600 text-gray-500 cursor-not-allowed"
+                          : " hover:bg-gray-100"
+                      }`}
+                      disabled={item.quantity <= 1}
                     >
-                      −
+                      -
                     </button>
                     <span>{item.quantity}</span>
                     <button
                       onClick={() => handleAdd(item.id)}
-                      className="px-2 py-1 border rounded text-sm"
+                      className="px-2 py-1 border rounded text-sm  hover:bg-gray-100"
                     >
                       +
                     </button>
@@ -101,7 +109,7 @@ export default function ShoppingCart({ initialCart }: any) {
               </div>
               <button
                 onClick={() => handleRemove(item.id)}
-                className="text-red-600 hover:text-red-800 text-sm font-medium"
+                className="text-red-600 hover:text-red-800 hover:bg-gray-100 text-sm font-medium"
               >
                 Remove
               </button>
@@ -109,7 +117,9 @@ export default function ShoppingCart({ initialCart }: any) {
           ))}
 
           <div className="flex justify-between items-center mt-6 border-t pt-4">
-            <p className="text-xl font-semibold text-red-400">Total: {total.toFixed(2)}</p>
+            <p className="text-xl font-semibold text-red-400">
+              Total: {total.toFixed(2)}
+            </p>
 
             <button
               onClick={handleBuy}

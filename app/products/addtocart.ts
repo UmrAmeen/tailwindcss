@@ -31,20 +31,20 @@ export async function getCartQuantity(productId: number) {
 }
 
 
-export async function buyCartItems(cart: any[]) {
-  const insert = db.prepare(`
-    INSERT INTO orders (product_id, quantity, total_price)
-    VALUES (?, ?, ?)
-  `);
+// export async function buyCartItems(cart: any[]) {
+//   const insert = db.prepare(`
+//     INSERT INTO orders (product_id, quantity, total_price)
+//     VALUES (?, ?, ?)
+//   `);
 
-  const insertItem = db.transaction((items: any[]) => {
-    items.map(item =>
-      insert.run(item.id, item.qty, item.price * item.qty)
-    );
-  });
+//   const insertItem = db.transaction((items: any[]) => {
+//     items.map(item =>
+//       insert.run(item.id, item.qty, item.price * item.qty)
+//     );
+//   });
 
-  insertItem(cart);
+//   insertItem(cart);
 
-  return { success: true, message: "Items purchased successfully." };
-}
+//   return { success: true, message: "Items purchased successfully." };
+// }
 
