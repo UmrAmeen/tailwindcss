@@ -7,7 +7,7 @@ export default function NavBar() {
       <button className="relative flex text-black px-2 py-1   duration-300">
         <Download className="mr-2" size={24} />
       </button>
-      <Link href="/products/shopingCart">
+      <Link href="/shopingCart">
         <div className="relative mx-2">
           <button className="relative flex text-black px-2 py-1  duration-300">
             <ShoppingCart className="mr-2" size={24} />
