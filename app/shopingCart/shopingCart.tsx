@@ -73,7 +73,7 @@ export default function ShoppingCart({ initialCart }: any) {
                 <img
                   src={item.base64Image}
                   alt={item.product_name}
-                  className="w-16 h-16 object-cover rounded"
+                  className="w-[64px] h-16 object-cover rounded"
                 />
                 <div>
                   <p className="font-semibold">{item.product_name}</p>

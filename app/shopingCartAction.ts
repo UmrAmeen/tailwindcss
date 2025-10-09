@@ -1,6 +1,7 @@
 "use server";
 
 import db from "@/app/lib/sqlite/db";
+import { revalidatePath } from "next/cache";
 
 export async function addItem(cartId: number) {
   db.prepare("UPDATE cart SET quantity = quantity + 1 WHERE id = ?").run(
@@ -22,6 +23,7 @@ export async function decreaseItem(cartId: number) {
 
 export async function removeItem(cartId: number) {
   db.prepare("DELETE FROM cart WHERE id = ?").run(cartId);
+  revalidatePath("/shopingCart");
 }
 
 export async function buyCart(cart: any[]) {
@@ -31,7 +33,9 @@ export async function buyCart(cart: any[]) {
   `);
 
   const insertItem = db.transaction((items: any[]) => {
-    items.map((item) => insert.run(item.id, item.qty, item.price * item.qty));
+    items.map((item) =>
+      insert.run(item.id, item.quantity, item.price * item.quantity)
+    );
   });
 
   insertItem(cart);

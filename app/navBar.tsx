@@ -1,5 +1,6 @@
 import { AlignJustify, Download, ShoppingCart } from "feather-icons-react";
 import Link from "next/link";
+import ShoppingCartButton from "./shopingCartButton";
 
 export default function NavBar() {
   return (
@@ -18,7 +19,7 @@ export default function NavBar() {
           </button>
         </div>
       </Link>
-
+  {/* <ShoppingCartButton/> */}
       <button className="relative flex hover:bg-red-500  text-black px-2 py-1 duration-300">
         <AlignJustify className="mr-2" size={24} />
       </button>
