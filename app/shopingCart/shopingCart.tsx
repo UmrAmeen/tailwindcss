@@ -1,58 +1,43 @@
 "use client";
-
-import { useState } from "react";
 import {
   addItem,
   buyCart,
   removeItem,
   decreaseItem,
 } from "../shopingCartAction";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 interface RowType {
   [key: string]: any;
 }
 
-export default function ShoppingCart({ initialCart }: any) {
-  const [cart, setCart] = useState(initialCart);
+export default function ShoppingCart({ cart }: { cart: RowType[] }) {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
-
-  const updateCartItem = (id: number, quantity: number) => {
-    setCart((prev: RowType) =>
-      prev.map((item: RowType) =>
-        item.id === id ? { ...item, quantity } : item
-      )
-    );
-  };
-
   const handleAdd = async (id: number) => {
     await addItem(id);
-    const currentQty = cart.find((i: RowType) => i.id === id)?.quantity || 0;
-    updateCartItem(id, currentQty + 1);
+    router.refresh();
   };
 
   const handleDecrease = async (id: number) => {
-    const currentQty = cart.find((i: RowType) => i.id === id)?.quantity || 0;
-    if (currentQty <= 1) return;
-
     await decreaseItem(id);
-    updateCartItem(id, currentQty - 1);
+    router.refresh();
   };
 
   const handleRemove = async (id: number) => {
     await removeItem(id);
-    setCart((prev: RowType) => prev.filter((item: RowType) => item.id !== id));
+    router.refresh();
   };
 
   const handleBuy = async () => {
     const confirmed = confirm("Are you sure you want to buy these items?");
     if (!confirmed) return;
-
     setLoading(true);
     await buyCart(cart);
-    setCart([]);
+    router.refresh();
     setLoading(false);
   };
-
   const total = cart.reduce(
     (sum: number, item: RowType) => sum + item.price * item.quantity,
     0
