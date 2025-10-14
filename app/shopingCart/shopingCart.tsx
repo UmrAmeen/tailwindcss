@@ -49,7 +49,7 @@ export default function ShoppingCart({ cart }: { cart: RowType[] }) {
           {cart.map((item: RowType) => (
             <div
               key={item.id}
-              className="flex flex-col md:flex-row items-start md:items-center justify-between p-4 border rounded-md shadow-sm gap-4"
+              className="flex flex-col md:flex-row items-start md:items-center justify-between p-4 border  border-purple-500  rounded-md shadow-sm gap-4"
             >
               <div className="flex flex-[2] items-center gap-4">
                 <img
@@ -57,15 +57,15 @@ export default function ShoppingCart({ cart }: { cart: RowType[] }) {
                   alt={item.product_name}
                   className="w-[84px] h-auto object-cover rounded"
                 />
-                <p className="font-medium">{item.product_name}</p>
+                <p className="font-medium text-green-600">{item.product_name}</p>
               </div>
 
               <div className="flex-1 flex items-center gap-2">
                 <button
                   onClick={() => handleDecrease(item.id)}
-                  className={`px-2 py-1 border rounded text-sm ${
+                  className={`px-2 py-1 border  text-green-600 rounded text-sm ${
                     item.quantity <= 1
-                      ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                      ? "bg-gray-800 text-gray-500 cursor-not-allowed"
                       : "hover:bg-gray-100"
                   }`}
                   disabled={item.quantity <= 1}
@@ -75,7 +75,7 @@ export default function ShoppingCart({ cart }: { cart: RowType[] }) {
                 <span>{item.quantity}</span>
                 <button
                   onClick={() => handleAdd(item.id)}
-                  className="px-2 py-1 border rounded text-sm hover:bg-gray-100"
+                  className="px-2 py-1 border rounded  text-green-600 text-sm hover:bg-gray-100"
                 >
                   +
                 </button>
@@ -91,7 +91,7 @@ export default function ShoppingCart({ cart }: { cart: RowType[] }) {
               <div className="w-[80px]">
                 <button
                   onClick={() => handleRemove(item.id)}
-                  className="text-red-600 hover:text-red-800 hover:bg-gray-100 text-sm font-medium"
+                  className="text-red-600 hover:text-red-800 font-semibold hover:bg-gray-100 text-sm font-medium"
                 >
                   Remove
                 </button>
