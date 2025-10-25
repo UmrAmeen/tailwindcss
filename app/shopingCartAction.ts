@@ -47,3 +47,8 @@ export async function buyCart(cart: any[]) {
 
   return { success: true, message: "Items purchased successfully." };
 }
+
+export async function getCartTotalQuantity() {
+  const row = db.prepare("SELECT SUM(quantity) as total FROM cart").get();
+  return row.total || 0;
+}

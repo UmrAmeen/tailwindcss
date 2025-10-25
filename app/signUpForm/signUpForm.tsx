@@ -1,5 +1,4 @@
 "use client";
-
 import { useActionState } from "react";
 import { CreateSignUpForm } from "../signupAction";
 
@@ -73,7 +72,7 @@ export default function SignUpForm() {
           disabled={isPending}
           formAction={formAction}
         >
-          LOGIN
+          SIGNIN
         </button>
       </form>
     </div>

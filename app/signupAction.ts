@@ -1,4 +1,4 @@
-"use server"
+"use server";
 import db from "./lib/sqlite/db";
 
 export async function CreateSignUpForm(prevFormState: any, formData: FormData) {
@@ -33,4 +33,28 @@ export async function insertImage(image: File): Promise<number> {
   const result = imageInsert.run(imageBuffer, imageType);
 
   return result.lastInsertRowid;
+}
+
+export async function CreateLoginForm(prevFormState: any, formData: FormData) {
+  const name = formData.get("name");
+  const email = formData.get("email");
+  const password = formData.get("password");
+
+  const insert = db.prepare(
+    "INSERT INTO login(name,email,password) VALUES(?,?,?)"
+  );
+
+  const result = insert.run(name, email, password);
+  console.log("name", name);
+
+  if (result.lastInsertRowid) {
+    return {
+      success: true,
+      error: "",
+    };
+  }
+  return {
+    success: false,
+    error: "Something went wrong!",
+  };
 }
