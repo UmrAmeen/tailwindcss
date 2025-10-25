@@ -36,16 +36,12 @@ export async function insertImage(image: File): Promise<number> {
 }
 
 export async function CreateLoginForm(prevFormState: any, formData: FormData) {
-  const name = formData.get("name");
   const email = formData.get("email");
   const password = formData.get("password");
 
-  const insert = db.prepare(
-    "INSERT INTO login(name,email,password) VALUES(?,?,?)"
-  );
+  const insert = db.prepare("INSERT INTO login(email,password) VALUES(?,?)");
 
-  const result = insert.run(name, email, password);
-  console.log("name", name);
+  const result = insert.run(email, password);
 
   if (result.lastInsertRowid) {
     return {

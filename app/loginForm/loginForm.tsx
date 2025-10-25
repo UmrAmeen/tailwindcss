@@ -1,23 +1,15 @@
 "use client";
-import { useActionState, useEffect } from "react";
+import { useActionState } from "react";
 import { CreateLoginForm } from "../signupAction";
 
-export default function Login({ onSuccess }: { onSuccess: () => void }) {
+export default function Login({ onSuccess }: any) {
   const [state, formAction, isPending] = useActionState(CreateLoginForm, {
     success: false,
     error: "",
   });
-
-  useEffect(() => {
-    if (state.success) {
-      onSuccess();
-    }
-  }, [state.success, onSuccess]);
-
-  if (state.success) {
-    return null;
+  if (state.success && !isPending) {
+    onSuccess();
   }
-
   return (
     <div className="flex items-center justify-center h-screen bg-gray-900">
       <div className="bg-white p-8 rounded-lg shadow-md w-96">
