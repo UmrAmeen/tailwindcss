@@ -7,9 +7,9 @@ export default function Login({ onSuccess }: any) {
     success: false,
     error: "",
   });
-  if (state.success && !isPending) {
-    onSuccess();
-  }
+  // if (state.success && !isPending) {
+  //   onSuccess();
+  // }
   return (
     <div className="flex items-center justify-center h-screen bg-gray-900">
       <div className="bg-white p-8 rounded-lg shadow-md w-96">

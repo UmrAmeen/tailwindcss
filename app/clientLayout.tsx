@@ -11,10 +11,10 @@ export default function ClientLayout({
 }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  useEffect(() => {
-    const loggedIn = localStorage.getItem("loggedIn");
-    if (loggedIn === "true") setIsLoggedIn(true);
-  }, []);
+  // useEffect(() => {
+  //   const loggedIn = localStorage.getItem("loggedIn");
+  //   if (loggedIn === "true") setIsLoggedIn(true);
+  // }, []);
   
   function handleLoginSuccess() {
     localStorage.setItem("loggedIn", "true");
