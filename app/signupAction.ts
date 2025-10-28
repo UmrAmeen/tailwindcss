@@ -39,18 +39,17 @@ export async function CreateLoginForm(prevFormState: any, formData: FormData) {
   const email = formData.get("email");
   const password = formData.get("password");
 
-  const insert = db.prepare("INSERT INTO login(email,password) VALUES(?,?)");
+ 
+  if (!email || !password) {
+    return { success: false, error: "Email and password are required" };
+  }
 
+  const insert = db.prepare("INSERT INTO login(email,password) VALUES(?,?)");
   const result = insert.run(email, password);
 
   if (result.lastInsertRowid) {
-    return {
-      success: true,
-      error: "",
-    };
+    return { success: true, error: "" };
   }
-  return {
-    success: false,
-    error: "Something went wrong!",
-  };
+
+  return { success: false, error: "Something went wrong!" };
 }

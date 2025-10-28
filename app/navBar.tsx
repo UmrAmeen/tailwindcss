@@ -1,6 +1,5 @@
-"use server"
-import { AlignJustify, Download, ShoppingCart } from "feather-icons-react";
-import Link from "next/link";
+"use server";
+import { AlignJustify, Download } from "feather-icons-react";
 import ShoppingCartButton from "./shopingCartButton";
 import { getCartTotalQuantity } from "./shopingCartAction";
 
@@ -12,9 +11,9 @@ export default async function NavBar() {
       <button className="relative flex text-black px-2 py-1 duration-300">
         <Download className="mr-2" size={24} />
       </button>
-      <Link href="/shopingCart">
+      <a href="/shopingCart">
         <ShoppingCartButton totalQuantity={totalQuantity} />
-      </Link>
+      </a>
       <button className="relative flex hover:bg-red-500 text-black px-2 py-1 duration-300">
         <AlignJustify className="mr-2" size={24} />
       </button>
