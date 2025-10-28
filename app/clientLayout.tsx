@@ -4,17 +4,18 @@ import SideBar from "./sidebar";
 import NavBar from "./navBar";
 import Login from "./loginForm/loginForm";
 
-export default function ClientLayout({ children }: { children: React.ReactNode }) {
+export default function ClientLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const [isLogin, setIsLogin] = useState(false);
 
-  const handleLoginSuccess = () => {
+  function handleLoginSuccess() {
     setIsLogin(true);
-  };
-
-  if (!isLogin) {
-    return <Login onLoginSuccess={handleLoginSuccess} />;
   }
-
+ 
+  
   return (
     <div className="h-screen flex flex-col">
       <NavBar />

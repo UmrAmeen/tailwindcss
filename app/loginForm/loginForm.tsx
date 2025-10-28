@@ -1,8 +1,10 @@
 "use client";
-import React, { useActionState } from "react";
+import React, { useActionState, useState } from "react";
 import { CreateLoginForm } from "../signupAction";
 
 export default function Login({ onLoginSuccess }: any) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [state, formAction, isPending] = useActionState(CreateLoginForm, {
     success: false,
     error: "",

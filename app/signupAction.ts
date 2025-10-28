@@ -1,4 +1,5 @@
 "use server";
+import { redirect } from "next/navigation";
 import db from "./lib/sqlite/db";
 
 export async function CreateSignUpForm(prevFormState: any, formData: FormData) {
@@ -23,6 +24,7 @@ export async function CreateSignUpForm(prevFormState: any, formData: FormData) {
     error: "Something went wrong!",
   };
 }
+
 export async function insertImage(image: File): Promise<number> {
   const imageBuffer = Buffer.from(await image.arrayBuffer());
   const imageType = image.type;
@@ -39,17 +41,17 @@ export async function CreateLoginForm(prevFormState: any, formData: FormData) {
   const email = formData.get("email");
   const password = formData.get("password");
 
- 
   if (!email || !password) {
     return { success: false, error: "Email and password are required" };
   }
 
   const insert = db.prepare("INSERT INTO login(email,password) VALUES(?,?)");
   const result = insert.run(email, password);
-
+  //  console.log("result",result)
   if (result.lastInsertRowid) {
-    return { success: true, error: "" };
+    return { success: true, error: "!!" };
   }
 
+  redirect("/dashboard")
   return { success: false, error: "Something went wrong!" };
 }
