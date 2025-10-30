@@ -16,7 +16,7 @@ export default function ProductIdCard({ row, quantity }: any) {
         <h2 className="text-[20px] font-bold text-[#8d44ee]">{row.name}</h2>
         <p className="text-sm text-red-600 mt-1">{row.description}</p>
         <p className="text-red-600">{row.price}</p>
-        <Link href={`/products/${row.slug}/edit`}>
+        <Link href={`/dashbord/products/${row.slug}/edit`}>
           <button className="border w-[100px] border-solid border-black/10 hover:bg-gray-400 rounded-lg bg-gray-800 text-red-800 font-bold text-lg text-center">
             Edit
           </button>

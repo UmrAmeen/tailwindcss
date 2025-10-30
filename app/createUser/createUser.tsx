@@ -1,8 +1,8 @@
 "use client";
 import { useActionState } from "react";
-import { CreateSignUpForm } from "../signupAction";
+import { CreateSignUpForm } from "../dashbord/signupAction";
 
-export default function SignUpForm() {
+export default function CreateUser() {
   const [state, formAction, isPending] = useActionState(CreateSignUpForm, {
     success: false,
     error: "",
@@ -50,19 +50,17 @@ export default function SignUpForm() {
         </div>
 
         <div>
-          <label
-            className="block text-sm font-medium mb-1"
-            htmlFor="phoneNumber"
-          >
-            Phone Number
+          <label className="block text-sm font-medium mb-1" htmlFor="password">
+            passord
           </label>
           <input
-            name="phoneNumber"
-            id="phoneNumber"
-            type="tel"
-            placeholder="Phone number"
+            name="password"
+            id="password"
+            type="password"
+            placeholder="password"
             className="w-full border rounded px-3 py-2"
             required
+            autoComplete="new-password"
           />
         </div>
 

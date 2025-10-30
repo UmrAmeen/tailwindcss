@@ -1,19 +1,22 @@
 "use client";
-import React, { useActionState, useState } from "react";
+import React, { useEffect } from "react";
+import { useActionState } from "react";
+import { useRouter } from "next/navigation";
 import { CreateLoginForm } from "../signupAction";
 
-export default function Login({ onLoginSuccess }: any) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+export default function LoginForm() {
+  const router = useRouter();
   const [state, formAction, isPending] = useActionState(CreateLoginForm, {
     success: false,
     error: "",
   });
 
-  if (state.success) {
-    onLoginSuccess();
-  }
-
+  useEffect(() => {
+    if (state.success) {
+      document.cookie = "loggedIn=true";
+      router.push("/dashbord");
+    }
+  }, [state.success, router]);
   return (
     <div className="flex items-center justify-center h-screen bg-gray-900">
       <div className="bg-white p-8 rounded-lg shadow-md w-96">
@@ -31,23 +34,25 @@ export default function Login({ onLoginSuccess }: any) {
             <input
               type="email"
               name="email"
+              required
               className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring focus:ring-blue-300"
-              placeholder="Enter your email"
             />
           </div>
+
           <div>
             <label className="block text-sm font-medium mb-1">Password</label>
             <input
               type="password"
               name="password"
+              required
               className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring focus:ring-blue-300"
-              placeholder="Enter your password"
             />
           </div>
+
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
             disabled={isPending}
+            className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
           >
             {isPending ? "Logging in..." : "Log In"}
           </button>

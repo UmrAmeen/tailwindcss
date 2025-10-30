@@ -1,4 +1,4 @@
-import db from "../lib/sqlite/db";
+import db from "@/app/lib/sqlite/db";
 import ProductList from "./productList";
 
 interface RowType {

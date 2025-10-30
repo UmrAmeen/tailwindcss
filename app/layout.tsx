@@ -1,5 +1,6 @@
+
 import "./globals.css";
-import ClientLayout from "./clientLayout";
+import React from "react";
 
 export default function RootLayout({
   children,
@@ -8,9 +9,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
-        <ClientLayout>{children}</ClientLayout>
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

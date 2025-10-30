@@ -11,7 +11,7 @@ export default async function NavBar() {
       <button className="relative flex text-black px-2 py-1 duration-300">
         <Download className="mr-2" size={24} />
       </button>
-      <a href="/shopingCart">
+      <a href="/dashbord/shopingCart">
         <ShoppingCartButton totalQuantity={totalQuantity} />
       </a>
       <button className="relative flex hover:bg-red-500 text-black px-2 py-1 duration-300">

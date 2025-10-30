@@ -1,6 +1,6 @@
 "use server";
 import { revalidatePath } from "next/cache";
-import db from "./lib/sqlite/db";
+import db from "../lib/sqlite/db";
 import { redirect } from "next/navigation";
 
 export default async function CreateProductForm(

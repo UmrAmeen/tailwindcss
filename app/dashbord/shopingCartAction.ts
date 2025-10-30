@@ -3,7 +3,7 @@
 import db from "@/app/lib/sqlite/db";
 import { revalidatePath } from "next/cache";
 
-const CART_PATH = "/shoppingCart";
+const CART_PATH = "/dashbord/shoppingCart";
 
 export async function addItem(cartId: number) {
   db.prepare("UPDATE cart SET quantity = quantity + 1 WHERE id = ?").run(

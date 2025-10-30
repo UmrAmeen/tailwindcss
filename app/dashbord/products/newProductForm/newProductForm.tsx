@@ -2,7 +2,7 @@
 import { useActionState, useState } from "react";
 import slugify from "slugify";
 import ImageSelector from "./tabImageUplode";
-import CreateProductForm from "@/app/productFormAction";
+import CreateProductForm from "../../productFormAction";
 
 export default function NewProductForm({ categoryRows, Images }: any) {
   const [name, setName] = useState("");
