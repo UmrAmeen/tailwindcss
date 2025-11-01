@@ -1,18 +1,7 @@
-import { redirect } from 'next/navigation';
-import { cookies } from 'next/headers';
-import NavBar from './navBar';
-import SideBar from './sidebar';
+import NavBar from "./navBar";
+import SideBar from "./sidebar";
 
-export default async function DashbordLayout({
-  children,
-}:any) {
-  const cookieStore = await cookies();
-  const loggedIn = cookieStore.get('loggedIn');
-
-  if (!loggedIn || loggedIn.value !== 'true') {
-    return redirect('/');
-  }
-
+export default async function DashbordLayout({ children }: any) {
   return (
     <div className="h-screen flex flex-col">
       <NavBar />

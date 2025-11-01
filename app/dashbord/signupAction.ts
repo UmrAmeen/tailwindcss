@@ -1,5 +1,5 @@
 "use server";
-
+import { redirect } from "next/navigation";
 import db from "../lib/sqlite/db";
 
 export async function CreateSignUpForm(prevFormState: any, formData: FormData) {
@@ -40,7 +40,7 @@ export async function CreateLoginForm(prevFormState: any, formData: FormData) {
     return { success: false, error: "Invalid email or password" };
   }
 
-  return { success: true, error: "" };
+  redirect("/dashbord");
 }
 export async function insertImage(image: File): Promise<number> {
   const imageBuffer = Buffer.from(await image.arrayBuffer());

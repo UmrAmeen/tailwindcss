@@ -1,4 +1,3 @@
-"use server";
 import { AlignJustify, Download } from "feather-icons-react";
 import ShoppingCartButton from "./shopingCartButton";
 import { getCartTotalQuantity } from "./shopingCartAction";
