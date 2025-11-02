@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useActionState } from "react";
 import { CreateLoginForm } from "../signupAction";
 
@@ -13,6 +13,12 @@ export default function LoginForm() {
     success: false,
     error: "",
   });
+
+  useEffect(() => {
+    if (state.success) {
+      //local
+    }
+  }, [email])
 
   function handleSubmit(e: any) {
     if (password !== confirmPassword) {

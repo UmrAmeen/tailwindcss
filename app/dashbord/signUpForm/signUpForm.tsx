@@ -10,6 +10,9 @@ export default function SignUpForm() {
 
   return (
     <div className="max-w-md mx-auto mt-10 p-6 bg-gray-300 rounded shadow ">
+      <h1 className="mb-4 p-2 bg-blue-200 text-center text-xl text-blue-800 rounded">
+        signUp Form
+      </h1>
       {state.success ? (
         <div className="mb-4 p-2 bg-green-200 text-green-800 rounded">
           Signup successful!
@@ -60,7 +63,7 @@ export default function SignUpForm() {
             placeholder="password"
             className="w-full border rounded px-3 py-2"
             required
-             autoComplete="new-password" 
+            autoComplete="new-password"
           />
         </div>
 
