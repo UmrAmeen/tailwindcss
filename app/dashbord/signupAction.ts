@@ -25,6 +25,8 @@ export async function CreateSignUpForm(prevFormState: any, formData: FormData) {
   };
 }
 
+
+
 export async function CreateLoginForm(prevFormState: any, formData: FormData) {
   const email = formData.get("email");
   const password = formData.get("password");
@@ -40,8 +42,10 @@ export async function CreateLoginForm(prevFormState: any, formData: FormData) {
     return { success: false, error: "Invalid email or password" };
   }
 
-  redirect("/dashbord");
+  // Let client handle redirect (we don't call redirect() here)
+  return { success: true, error: "" };
 }
+
 export async function insertImage(image: File): Promise<number> {
   const imageBuffer = Buffer.from(await image.arrayBuffer());
   const imageType = image.type;

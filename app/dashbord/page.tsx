@@ -1,9 +1,5 @@
-import DashbordLayout from "./dashbordLayout";
+"use client";
 
-export default function DashbordPage() {
-  return (
-    <>
-      <DashbordLayout>welcome to dashbord </DashbordLayout>
-    </>
-  );
+export default function DashboardPage() {
+  return <h1 className="text-2xl font-bold">Welcome to your dashboard!</h1>;
 }
