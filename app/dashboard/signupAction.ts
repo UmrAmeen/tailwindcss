@@ -1,5 +1,5 @@
 "use server";
-import { redirect } from "next/navigation";
+
 import db from "../lib/sqlite/db";
 
 export async function CreateSignUpForm(prevFormState: any, formData: FormData) {
@@ -25,8 +25,6 @@ export async function CreateSignUpForm(prevFormState: any, formData: FormData) {
   };
 }
 
-
-
 export async function CreateLoginForm(prevFormState: any, formData: FormData) {
   const email = formData.get("email");
   const password = formData.get("password");
@@ -42,7 +40,6 @@ export async function CreateLoginForm(prevFormState: any, formData: FormData) {
     return { success: false, error: "Invalid email or password" };
   }
 
-  // Let client handle redirect (we don't call redirect() here)
   return { success: true, error: "" };
 }
 
