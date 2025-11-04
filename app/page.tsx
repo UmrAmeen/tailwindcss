@@ -4,7 +4,7 @@ import Link from "next/link";
 export default function HomePage() {
   return (
     <div className="flex min-h-screen">
-      <main className="flex-1 flex flex-col items-center justify-center bg-gray-100">
+      <main className="flex-1 flex flex-col items-center justify-center bg-gray-500">
         <p className="text-3xl font-bold mb-6">Welcome to my app</p>
 
         <Link

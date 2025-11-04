@@ -37,10 +37,12 @@ export default function DashboardLayout({
         }}
       />
       <div className="flex flex-1">
-        <div className="w-64 bg-gray-800 text-white">
+        <div className="w-64 bg-gradient-to-r from-blue-400 to-purple-400 text-white">
           <SideBar />
         </div>
-        <main className="flex-1 p-4 overflow-auto bg-gray-100">{children}</main>
+        <main className="flex-1 p-4 overflow-auto bg-gradient-to-r from-green-200 to-red-200">
+          {children}
+        </main>
       </div>
     </div>
   );

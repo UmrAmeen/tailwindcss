@@ -101,7 +101,7 @@ export async function UpdateProductForm(
   console.log("result", result);
 
   return result.changes > 0
-    ? (revalidatePath(`/products/${slug}`), redirect(`/products/${slug}`))
+    ? (revalidatePath(`/dashboard/products/${slug}`), redirect(`/dashboard/products/${slug}`))
     : { success: false, error: "No changes were made" };
 }
 

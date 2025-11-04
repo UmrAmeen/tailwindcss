@@ -8,7 +8,7 @@ export default function CategoryList({ categoryRows }: any) {
   return (
     <div className="flex flex-wrap">
       {categoryRows.map((row: RowType) => (
-        <Link key={row.id} href={`/dashbord/categorys/${row.slug}`}>
+        <Link key={row.id} href={`/dashboard/categorys/${row.slug}`}>
           <div>
             <CategoryCard row={row} />
           </div>

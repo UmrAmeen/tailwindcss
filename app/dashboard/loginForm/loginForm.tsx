@@ -2,8 +2,8 @@
 
 import { useEffect } from "react";
 import { useActionState } from "react";
-import { CreateLoginForm } from "../signupAction";
-
+import { CreateLoginForm } from "../../signupAction";
+import Link from "next/link";
 
 export default function LoginForm({ onLogin }: any) {
   const [state, formAction, isPending] = useActionState(CreateLoginForm, {
@@ -14,12 +14,12 @@ export default function LoginForm({ onLogin }: any) {
   useEffect(() => {
     if (state.success) {
       localStorage.setItem("isLoggedIn", "true");
-      onLogin(); 
+      onLogin();
     }
   }, [state.success, onLogin]);
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-900 text-white">
+    <div className="flex items-center justify-center min-h-screen  text-white">
       <div className="bg-white p-8 rounded-lg shadow-md w-96 text-black">
         <h1 className="text-2xl font-bold text-center mb-6">Login</h1>
 
@@ -48,6 +48,11 @@ export default function LoginForm({ onLogin }: any) {
             {isPending ? "Logging in..." : "Login"}
           </button>
         </form>
+        <Link href="/signUp" className="text-blue-500 ">
+          <p className="w-full text-center mt-5 bg-green-600 text-white p-2 rounded hover:bg-green-700">
+            signup
+          </p>
+        </Link>
       </div>
     </div>
   );
