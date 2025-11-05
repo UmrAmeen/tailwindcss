@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useActionState } from "react";
 import { CreateLoginForm } from "../../signupAction";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function LoginForm({ onLogin }: any) {
   const [state, formAction, isPending] = useActionState(CreateLoginForm, {
@@ -10,10 +11,11 @@ export default function LoginForm({ onLogin }: any) {
     error: "",
   });
 
+  const router = useRouter();
+
   useEffect(() => {
     if (state.success) {
-      localStorage.setItem("isLoggedIn", "true");
-      onLogin();
+      router.refresh();
     }
   }, [state.success, onLogin]);
 

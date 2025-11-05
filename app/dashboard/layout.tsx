@@ -1,41 +1,24 @@
-"use client";
-import { useEffect, useState } from "react";
-import NavBar from "./navBar";
 import SideBar from "./sidebar";
 import LoginForm from "./loginForm/loginForm";
+import { cookies } from "next/headers";
+import NavBar from "./navBar";
 
-export default function DashboardLayout({
+export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
+  const cookieStore = await cookies();
 
-  useEffect(() => {
-    const loggedIn = localStorage.getItem("isLoggedIn") === "true";
-    setIsLoggedIn(loggedIn);
-  }, []);
-
-  if (isLoggedIn === null) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        Loading...
-      </div>
-    );
-  }
-
-  if (!isLoggedIn) {
-    return <LoginForm onLogin={() => setIsLoggedIn(true)} />;
+  const userId = cookieStore.get("userid");
+  console.log("userid", userId);
+  if (!userId) {
+    return <LoginForm />;
   }
 
   return (
     <div className="h-screen flex flex-col">
-      <NavBar
-        onLogout={() => {
-          localStorage.removeItem("isLoggedIn");
-          setIsLoggedIn(false);
-        }}
-      />
+      <NavBar />
       <div className="flex flex-1">
         <div className="w-64 bg-gradient-to-r from-blue-400 to-purple-400 text-white">
           <SideBar />

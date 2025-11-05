@@ -1,5 +1,6 @@
 "use server";
 
+import { cookies, headers } from "next/headers";
 import db from "./lib/sqlite/db";
 
 export async function CreateSignUpForm(prevFormState: any, formData: FormData) {
@@ -54,6 +55,9 @@ export async function CreateLoginForm(prevFormState: any, formData: FormData) {
   if (!user || user.password !== password) {
     return { success: false, error: "Invalid email or password" };
   }
+
+  const cookieStore = await cookies();
+  cookieStore.set("userid", user.name);
 
   return { success: true, error: "" };
 }
