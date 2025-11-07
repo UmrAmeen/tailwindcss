@@ -11,7 +11,7 @@ export default async function DashboardLayout({
   const cookieStore = await cookies();
 
   const userId = cookieStore.get("userid");
-  console.log("userid", userId);
+
   if (!userId) {
     return <LoginForm />;
   }

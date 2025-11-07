@@ -2,6 +2,8 @@
 
 import db from "@/app/lib/sqlite/db";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
 
 const CART_PATH = "/dashbord/shoppingCart";
 

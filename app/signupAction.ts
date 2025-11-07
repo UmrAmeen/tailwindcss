@@ -2,6 +2,7 @@
 
 import { cookies, headers } from "next/headers";
 import db from "./lib/sqlite/db";
+import { redirect } from "next/navigation";
 
 export async function CreateSignUpForm(prevFormState: any, formData: FormData) {
   const name = formData.get("name")?.toString();
@@ -62,6 +63,12 @@ export async function CreateLoginForm(prevFormState: any, formData: FormData) {
   return { success: true, error: "" };
 }
 
+export async function CreateLogout() {
+  const cookieStore = await cookies();
+  cookieStore.delete("userid");
+
+  redirect("/dashboard/loginForm");
+}
 export async function insertImage(image: File): Promise<number> {
   const imageBuffer = Buffer.from(await image.arrayBuffer());
   const imageType = image.type;
