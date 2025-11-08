@@ -67,8 +67,10 @@ export async function CreateLogout() {
   const cookieStore = await cookies();
   cookieStore.delete("userid");
 
-  redirect("/dashboard/loginForm");
+ redirect('/dashboard/loginForm')
 }
+
+
 export async function insertImage(image: File): Promise<number> {
   const imageBuffer = Buffer.from(await image.arrayBuffer());
   const imageType = image.type;
