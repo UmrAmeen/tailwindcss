@@ -10,7 +10,8 @@ export default async function DashboardLayout({
 }) {
   const cookieStore = await cookies();
 
-  const userId = cookieStore.get("userid");
+  const userId = cookieStore.get("userid")?.value;
+  console.log("[layout].userid", userId);
 
   if (!userId) {
     return <LoginForm />;
@@ -23,7 +24,7 @@ export default async function DashboardLayout({
         <div className="w-64 bg-gradient-to-r from-blue-400 to-purple-400 text-white">
           <SideBar />
         </div>
-        <main className="flex-1 p-4 overflow-auto bg-gradient-to-r from-green-200 to-red-200">
+        <main className="flex-1 p-4 overflow-auto bg-gradient-to-r from-green-300 to-red-300">
           {children}
         </main>
       </div>

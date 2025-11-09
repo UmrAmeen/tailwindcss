@@ -57,19 +57,22 @@ export async function CreateLoginForm(prevFormState: any, formData: FormData) {
     return { success: false, error: "Invalid email or password" };
   }
 
+  console.log("creating auth cookie", user);
   const cookieStore = await cookies();
   cookieStore.set("userid", user.name);
+  console.log("auth cookie");
+  // return { success: true, error: "" };
 
-  return { success: true, error: "" };
+  return redirect("/dashboard");
 }
 
 export async function CreateLogout() {
   const cookieStore = await cookies();
   cookieStore.delete("userid");
 
- redirect('/dashboard/loginForm')
+  // return { success: true, error: "" };
+  redirect("/dashboard/loginForm");
 }
-
 
 export async function insertImage(image: File): Promise<number> {
   const imageBuffer = Buffer.from(await image.arrayBuffer());

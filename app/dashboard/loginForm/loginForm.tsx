@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useActionState } from "react";
 import { CreateLoginForm } from "../../signupAction";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 
 export default function LoginForm({ onLogin }: any) {
   const [state, formAction, isPending] = useActionState(CreateLoginForm, {
@@ -11,13 +11,14 @@ export default function LoginForm({ onLogin }: any) {
     error: "",
   });
 
+  console.log("state", state);
   const router = useRouter();
 
   useEffect(() => {
     if (state.success) {
-      router.refresh();
+      redirect("/dashboard");
     }
-  }, [state.success, onLogin]);
+  }, [state.success]);
 
   return (
     <div className="flex items-center justify-center min-h-screen  text-white">
