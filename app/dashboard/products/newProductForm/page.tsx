@@ -1,4 +1,4 @@
-import db from "@/app/lib/sqlite/db";
+import db from "@/app/lib/db/db";
 import NewProductForm from "./newProductForm";
 
 export default function ProductForm() {

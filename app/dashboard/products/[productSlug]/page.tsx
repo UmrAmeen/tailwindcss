@@ -1,4 +1,4 @@
-import db from "@/app/lib/sqlite/db";
+import db from "@/app/lib/db/db";
 import ProductIdCard from "../productIdCard";
 import { getCartQuantity } from "../addtocart";
 export default async function ProductId({ params }: { params: any }) {

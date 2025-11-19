@@ -1,6 +1,6 @@
 "use server";
 import { revalidatePath } from "next/cache";
-import db from "../lib/sqlite/db";
+import db from "../lib/db/db";
 import { redirect } from "next/navigation";
 
 export default async function CreateProductForm(
@@ -101,7 +101,8 @@ export async function UpdateProductForm(
   console.log("result", result);
 
   return result.changes > 0
-    ? (revalidatePath(`/dashboard/products/${slug}`), redirect(`/dashboard/products/${slug}`))
+    ? (revalidatePath(`/dashboard/products/${slug}`),
+      redirect(`/dashboard/products/${slug}`))
     : { success: false, error: "No changes were made" };
 }
 

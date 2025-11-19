@@ -1,6 +1,6 @@
 "use server";
 
-import db from "@/app/lib/sqlite/db";
+import db from "@/app/lib/db/db";
 
 export async function addToCart(productId: number, quantity: number) {
   const existingItem = db
@@ -30,7 +30,6 @@ export async function getCartQuantity(productId: number) {
   return item ? item.quantity : 0;
 }
 
-
 // export async function buyCartItems(cart: any[]) {
 //   const insert = db.prepare(`
 //     INSERT INTO orders (product_id, quantity, total_price)
@@ -47,4 +46,3 @@ export async function getCartQuantity(productId: number) {
 
 //   return { success: true, message: "Items purchased successfully." };
 // }
-

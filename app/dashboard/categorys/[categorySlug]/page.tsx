@@ -1,4 +1,4 @@
-import db from "@/app/lib/sqlite/db";
+import db from "@/app/lib/db/db";
 import { notFound } from "next/navigation";
 import CategoryList from "../categoryList";
 import ProductList from "../../products/productList";
@@ -40,7 +40,7 @@ export default async function CategoryId({ params }: { params: any }) {
       `SELECT products.*,image AS image FROM products LEFT JOIN images ON products.image_id = images.id WHERE products.categoryId = ?`
     )
     .all(categoryRow.id.toString());
-     const productRowsWithBase64Images = productRows.map((row: RowType) => {
+  const productRowsWithBase64Images = productRows.map((row: RowType) => {
     const base64Image = row.image
       ? Buffer.from(row.image).toString("base64")
       : null;
@@ -52,11 +52,11 @@ export default async function CategoryId({ params }: { params: any }) {
   });
   return (
     <div>
-    {subcategoryRowsWithBase64Images.length > 0 ? (
-          <CategoryList categoryRows={subcategoryRowsWithBase64Images} />
-        ) : (
-          <ProductList productRow={productRowsWithBase64Images} />
-        )}
+      {subcategoryRowsWithBase64Images.length > 0 ? (
+        <CategoryList categoryRows={subcategoryRowsWithBase64Images} />
+      ) : (
+        <ProductList productRow={productRowsWithBase64Images} />
+      )}
     </div>
   );
 }

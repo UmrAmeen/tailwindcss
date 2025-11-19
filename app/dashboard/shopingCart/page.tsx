@@ -1,4 +1,4 @@
-import db from "@/app/lib/sqlite/db";
+import db from "@/app/lib/db/db";
 import ShoppingCart from "./shopingCart";
 
 export default function ShoppingCartPage() {
@@ -18,14 +18,14 @@ export default function ShoppingCartPage() {
     .all();
 
   const cartWithImages = cartItems.map((item: any) => {
-    const base64Image = Buffer.from(item.image).toString("base64"); 
+    const base64Image = Buffer.from(item.image).toString("base64");
     return {
       id: item.id,
       product_id: item.product_id,
       quantity: item.quantity,
       product_name: item.product_name,
       price: item.price,
-      base64Image: `data:image/jpeg;base64,${base64Image}`, 
+      base64Image: `data:image/jpeg;base64,${base64Image}`,
     };
   });
 

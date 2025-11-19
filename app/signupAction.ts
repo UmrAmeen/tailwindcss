@@ -1,7 +1,7 @@
 "use server";
 
 import { cookies, headers } from "next/headers";
-import db from "./lib/sqlite/db";
+import db from "./lib/db/db";
 import { redirect } from "next/navigation";
 
 export async function CreateSignUpForm(prevFormState: any, formData: FormData) {
