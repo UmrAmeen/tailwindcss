@@ -1,5 +1,13 @@
-import { sqliteTable, AnySQLiteColumn, integer, blob, text } from "drizzle-orm/sqlite-core"
+import { sqliteTable, AnySQLiteColumn, integer, text, blob } from "drizzle-orm/sqlite-core"
   import { sql } from "drizzle-orm"
+
+export const category = sqliteTable("category", {
+	id: integer().primaryKey().notNull(),
+	name: text().notNull(),
+	parentId: text("parent_id"),
+	imageId: text("image_id").notNull(),
+	slug: text(),
+});
 
 export const images = sqliteTable("images", {
 	id: integer().primaryKey(),
@@ -13,16 +21,14 @@ export const products = sqliteTable("products", {
 	imageId: integer("image_id"),
 	categoryId: integer(),
 	price: integer(),
-	slug: text(),
 	description: text(),
+	slug: text(),
 });
 
-export const category = sqliteTable("category", {
+export const cart = sqliteTable("cart", {
 	id: integer().primaryKey(),
-	name: text(),
-	parentId: text("parent_id"),
-	imageId: integer("image_id"),
-	slug: text(),
+	productId: integer("product_id"),
+	quantity: integer(),
 });
 
 export const orders = sqliteTable("orders", {
@@ -32,21 +38,15 @@ export const orders = sqliteTable("orders", {
 	totalPrice: integer("total_price"),
 });
 
-export const cart = sqliteTable("cart", {
-	id: integer().primaryKey(),
-	productId: integer("product_id"),
-	quantity: integer(),
-});
-
-export const login = sqliteTable("login", {
+export const user = sqliteTable("user", {
+	id: integer(),
 	name: text(),
 	email: text(),
 	password: text(),
 });
 
-export const user = sqliteTable("user", {
+export const drizzle = sqliteTable("drizzle", {
+	id: integer(),
 	name: text(),
-	email: blob(),
-	password: text(),
 });
 

@@ -3,16 +3,13 @@ import { useEffect } from "react";
 import { useActionState } from "react";
 import { CreateLoginForm } from "../../signupAction";
 import Link from "next/link";
-import { redirect, useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 
 export default function LoginForm({ onLogin }: any) {
   const [state, formAction, isPending] = useActionState(CreateLoginForm, {
     success: false,
     error: "",
   });
-
-  console.log("state", state);
-  const router = useRouter();
 
   useEffect(() => {
     if (state.success) {
