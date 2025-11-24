@@ -2,17 +2,19 @@
 import { revalidatePath } from "next/cache";
 import db from "../lib/db/db";
 import { redirect } from "next/navigation";
+import { images, products } from "@/drizzle/schema";
+import { eq } from "drizzle-orm";
 
 export default async function CreateProductForm(
   prevFormState: any,
   formData: FormData
 ) {
-  const name = formData.get("name");
+  const name = formData.get("name") as string;
   const image = formData.get("image") as File;
-  const categoryId = formData.get("categoryId");
-  const price = formData.get("price");
-  const slug = formData.get("slug");
-  const description = formData.get("description");
+  const categoryId = Number(formData.get("categoryId"));
+  const price = Number(formData.get("price"));
+  const slug = formData.get("slug") as string;
+  const description = formData.get("description") as string;
   const selectedImageId = formData.get("selectedImageId");
 
   let imageId: number | null = null;
@@ -22,98 +24,79 @@ export default async function CreateProductForm(
   } else if (image && image.size > 0) {
     imageId = await insertImage(image);
   } else {
-    return {
-      success: false,
-      error: "Please add an image.",
-    };
+    return { success: false, error: "Please add an image." };
   }
-  const insert = db.prepare(
-    "INSERT INTO products(name,image_id,categoryId,price,slug,description) VALUES(?,?,?,?,?,?)"
-  );
 
-  const result = insert.run(
-    name,
-    imageId,
-    categoryId,
-    price,
-    slug,
-    description
-  );
+  const result = await db
+    .insert(products)
+    .values({ name, imageId, categoryId, price, slug, description })
+    .returning({ id: products.id });
 
-  if (result.lastInsertRowid) {
-    return {
-      success: true,
-      error: "",
-    };
-  }
-  return {
-    success: false,
-    error: "Something went wrong!",
-  };
+  return result.length > 0
+    ? { success: true, error: "" }
+    : { success: false, error: "Something went wrong!" };
 }
+
 export async function UpdateProductForm(
   prevFormState: any,
   formData: FormData
 ) {
   const id = Number(formData.get("id"));
-  const name = formData.get("name");
+  const name = formData.get("name") as string;
   const image = formData.get("image") as File;
   const categoryId = Number(formData.get("categoryId"));
   const price = Number(formData.get("price"));
-  const slug = formData.get("slug");
-  const description = formData.get("description");
+  const slug = formData.get("slug") as string;
+  const description = formData.get("description") as string;
 
-  const existingProduct = db
-    .prepare("SELECT * FROM products WHERE id = ?")
-    .get(id);
+  const existingProduct = await db
+    .select()
+    .from(products)
+    .where(eq(products.id, id))
+    .get();
 
   if (!existingProduct) {
     return { success: false, error: "Product not found in database" };
   }
 
-  let imageId = existingProduct.image_id;
+  let imageId = existingProduct.imageId;
 
   if (image && image.size > 0) {
     imageId = await insertImage(image);
 
-    if (existingProduct.image_id) {
-      db.prepare("DELETE FROM images WHERE id = ?").run(
-        existingProduct.image_id
-      );
+    if (existingProduct.imageId) {
+      await db
+        .delete(images)
+        .where(eq(images.id, existingProduct.imageId))
+        .run();
     }
   }
 
-  const update = db.prepare(`
-  UPDATE products 
-  SET name = ?, image_id = ?, categoryId = ?, price = ?, slug = ?, description = ?
-  WHERE id = ?
-`);
+  const updated = await db
+    .update(products)
+    .set({ name, imageId, categoryId, price, slug, description })
+    .where(eq(products.id, id))
+    .returning({ id: products.id });
 
-  const result = update.run(
-    name,
-    imageId,
-    categoryId,
-    price,
-    slug,
-    description,
-    id
-  );
-  console.log("result", result);
-
-  return result.changes > 0
-    ? (revalidatePath(`/dashboard/products/${slug}`),
-      redirect(`/dashboard/products/${slug}`))
-    : { success: false, error: "No changes were made" };
+  if (updated.length > 0) {
+    revalidatePath(`/dashboard/products/${slug}`);
+    redirect(`/dashboard/products/${slug}`);
+  } else {
+    return { success: false, error: "No changes were made" };
+  }
 }
 
 export async function insertImage(image: File): Promise<number> {
   const imageBuffer = Buffer.from(await image.arrayBuffer());
   const imageType = image.type;
 
-  const imageInsert = db.prepare(
-    "INSERT INTO images (image, imageType) VALUES (?, ?)"
-  );
-  const result = imageInsert.run(imageBuffer, imageType);
+  const result = await db
+    .insert(images)
+    .values({
+      image: imageBuffer,
+      imageType,
+    })
+    .returning({ id: images.id });
 
-  return result.lastInsertRowid;
+  return result[0].id;
 }

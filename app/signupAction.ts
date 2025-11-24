@@ -1,87 +1,82 @@
 "use server";
 
-import { cookies, headers } from "next/headers";
-import db from "./lib/db/db";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { user, images } from "@/drizzle/schema";
+import { eq } from "drizzle-orm";
+import db from "./lib/db/db";
 
-export async function CreateSignUpForm(prevFormState: any, formData: FormData) {
+export async function CreateSignUpForm(_: any, formData: FormData) {
   const name = formData.get("name")?.toString();
   const email = formData.get("email")?.toString();
   const password = formData.get("password")?.toString();
   const confirmPassword = formData.get("confirmPassword")?.toString();
 
+  if (!name || !email || !password) {
+    return { success: false, error: "All fields are required." };
+  }
+
   if (password !== confirmPassword) {
-    return {
-      success: false,
-      error: "Invalid email or password",
-    };
+    return { success: false, error: "Passwords do not match." };
   }
 
   try {
-    const insert = db.prepare(
-      "INSERT INTO user(name,email,password) VALUES(?,?,?)"
-    );
-    const result = insert.run(name, email, password);
+    await db.insert(user).values({ name, email, password });
 
-    if (result.lastInsertRowid) {
-      return {
-        success: true,
-        error: "",
-      };
-    }
-    return {
-      success: false,
-      error: "Something went wrong!",
-    };
-  } catch (err) {
-    console.error(err);
-    return {
-      success: false,
-      error: "Database error!",
-    };
+    return { success: true, error: "" };
+  } catch (error) {
+    console.error(error);
+    return { success: false, error: "User already exists or DB error." };
   }
 }
 
-export async function CreateLoginForm(prevFormState: any, formData: FormData) {
-  const email = formData.get("email");
-  const password = formData.get("password");
+export async function CreateLoginForm(formData: FormData) {
+  const email = formData.get("email")?.toString();
+  const password = formData.get("password")?.toString();
 
   if (!email || !password) {
-    return { success: false, error: "Email and password are required" };
+    return { success: false, error: "Email and password are required." };
   }
 
-  const query = db.prepare("SELECT * FROM user WHERE email = ?");
-  const user = query.get(email);
+  const foundUser = await db
+    .select()
+    .from(user)
+    .where(eq(user.email, email))
+    .get();
 
-  if (!user || user.password !== password) {
-    return { success: false, error: "Invalid email or password" };
+  if (!foundUser || foundUser.password !== password) {
+    return { success: false, error: "Invalid email or password." };
   }
 
-  console.log("creating auth cookie", user);
   const cookieStore = await cookies();
-  cookieStore.set("userid", user.name);
-  console.log("auth cookie");
-  // return { success: true, error: "" };
+  cookieStore.set("userid", foundUser.name ?? "", {
+    httpOnly: true,
+    path: "/",
+    maxAge: 60 * 60 * 24,
+  });
 
-  return redirect("/dashboard");
+  redirect("/dashboard");
 }
 
 export async function CreateLogout() {
   const cookieStore = await cookies();
   cookieStore.delete("userid");
 
-  // return { success: true, error: "" };
   redirect("/dashboard/loginForm");
 }
 
 export async function insertImage(image: File): Promise<number> {
-  const imageBuffer = Buffer.from(await image.arrayBuffer());
-  const imageType = image.type;
+  const buffer = Buffer.from(await image.arrayBuffer());
+  const type = image.type;
 
-  const imageInsert = db.prepare(
-    "INSERT INTO images (image, imageType) VALUES (?, ?)"
-  );
-  const result = imageInsert.run(imageBuffer, imageType);
+  const result = await db
+    .insert(images)
+    .values({
+      image: buffer,
+      imageType: type,
+    })
+    .returning({ id: images.id })
+    .get();
 
-  return result.lastInsertRowid;
+  return result.id;
 }

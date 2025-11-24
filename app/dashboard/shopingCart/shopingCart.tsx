@@ -11,8 +11,12 @@ import { useState } from "react";
 interface RowType {
   [key: string]: any;
 }
-
-export default function ShoppingCart({ cart }: { cart: RowType[] }) {
+interface CartItem {
+  price: number | null;
+  quantity: number;
+  [key: string]: any;
+}
+export default function ShoppingCart({ cart }: any) {
   const [loading, setLoading] = useState(false);
 
   const handleAdd = async (id: number) => {
@@ -30,15 +34,16 @@ export default function ShoppingCart({ cart }: { cart: RowType[] }) {
   const handleBuy = async () => {
     const confirmed = confirm("Are you sure you want to buy these items?");
     if (!confirmed) return;
+
     setLoading(true);
     await buyCart(cart);
-
     setLoading(false);
   };
-  const total = cart.reduce(
-    (sum: number, item: RowType) => sum + item.price * item.quantity,
-    0
-  );
+
+  const total = cart.reduce((sum: number, item: CartItem) => {
+    const price = item.price ?? 0;
+    return sum + price * item.quantity;
+  }, 0);
 
   return (
     <div className="space-y-4">
@@ -46,58 +51,64 @@ export default function ShoppingCart({ cart }: { cart: RowType[] }) {
         <p className="text-red-500 font-bold">Your cart is empty!!</p>
       ) : (
         <>
-          {cart.map((item: RowType) => (
-            <div
-              key={item.id}
-              className="flex flex-col md:flex-row items-start md:items-center justify-between p-4 border  border-purple-500  rounded-md shadow-sm gap-4"
-            >
-              <div className="flex flex-[2] items-center gap-4">
-                <img
-                  src={item.base64Image}
-                  alt={item.product_name}
-                  className="w-[84px] h-auto object-cover rounded"
-                />
-                <p className="font-medium text-green-600">{item.product_name}</p>
-              </div>
+          {cart.map((item: RowType) => {
+            const price = item.price ?? 0;
+            const productName = item.product_name ?? "Unknown Product";
 
-              <div className="flex-1 flex items-center gap-2">
-                <button
-                  onClick={() => handleDecrease(item.id)}
-                  className={`px-2 py-1 border  text-green-600 rounded text-sm ${
-                    item.quantity <= 1
-                      ? "bg-gray-800 text-gray-500 cursor-not-allowed"
-                      : "hover:bg-gray-100"
-                  }`}
-                  disabled={item.quantity <= 1}
-                >
-                  -
-                </button>
-                <span>{item.quantity}</span>
-                <button
-                  onClick={() => handleAdd(item.id)}
-                  className="px-2 py-1 border rounded  text-green-600 text-sm hover:bg-gray-100"
-                >
-                  +
-                </button>
-              </div>
-              <div className="flex-1 text-green-600 font-medium">
-                Price: ${item.price.toFixed(2)}
-              </div>
+            return (
+              <div
+                key={item.id}
+                className="flex flex-col md:flex-row items-start md:items-center justify-between p-4 border border-purple-500 rounded-md shadow-sm gap-4"
+              >
+                <div className="flex flex-[2] items-center gap-4">
+                  <img
+                    src={item.base64Image ?? "/no-image.png"}
+                    alt={productName}
+                    className="w-[84px] h-auto object-cover rounded"
+                  />
+                  <p className="font-medium text-green-600">{productName}</p>
+                </div>
 
-              <div className="flex-1 text-green-600 font-medium">
-                Total: ${(item.price * item.quantity).toFixed(2)}
-              </div>
+                <div className="flex-1 flex items-center gap-2">
+                  <button
+                    onClick={() => handleDecrease(item.id)}
+                    className={`px-2 py-1 border text-green-600 rounded text-sm ${
+                      item.quantity <= 1
+                        ? "bg-gray-800 text-gray-500 cursor-not-allowed"
+                        : "hover:bg-gray-100"
+                    }`}
+                    disabled={item.quantity <= 1}
+                  >
+                    -
+                  </button>
+                  <span>{item.quantity}</span>
+                  <button
+                    onClick={() => handleAdd(item.id)}
+                    className="px-2 py-1 border rounded text-green-600 text-sm hover:bg-gray-100"
+                  >
+                    +
+                  </button>
+                </div>
 
-              <div className="w-[80px]">
-                <button
-                  onClick={() => handleRemove(item.id)}
-                  className="text-red-600 hover:text-red-800 font-semibold hover:bg-gray-100 text-sm font-medium"
-                >
-                  Remove
-                </button>
+                <div className="flex-1 text-green-600 font-medium">
+                  Price: ${price.toFixed(2)}
+                </div>
+
+                <div className="flex-1 text-green-600 font-medium">
+                  Total: ${(price * item.quantity).toFixed(2)}
+                </div>
+
+                <div className="w-[80px]">
+                  <button
+                    onClick={() => handleRemove(item.id)}
+                    className="text-red-600 hover:text-red-800 font-semibold hover:bg-gray-100 text-sm font-medium"
+                  >
+                    Remove
+                  </button>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
 
           <div className="flex justify-between items-center mt-6 border-t pt-4">
             <p className="text-xl font-semibold text-red-400">

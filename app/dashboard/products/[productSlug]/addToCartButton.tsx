@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import { addToCart } from "../addtocart";
 

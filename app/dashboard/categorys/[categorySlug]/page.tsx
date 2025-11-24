@@ -2,61 +2,60 @@ import db from "@/app/lib/db/db";
 import { notFound } from "next/navigation";
 import CategoryList from "../categoryList";
 import ProductList from "../../products/productList";
+import { category, images, products } from "@/drizzle/schema";
+import { eq } from "drizzle-orm";
 
-interface RowType {
-  [key: string]: any;
+function toBase64Image(image: unknown): string | null {
+  if (!image) return null;
+  return `data:image/jpeg;base64,${Buffer.from(image as Uint8Array).toString(
+    "base64"
+  )}`;
 }
-export default async function CategoryId({ params }: { params: any }) {
-  const categorySlug = (await params).categorySlug;
-  const categoryRow = db
-    .prepare(
-      `SELECT category.*,images.image FROM category LEFT JOIN images ON category.image_id = image_id WHERE category.slug = ?`
-    )
-    .get(categorySlug);
-  if (!categoryRow) {
-    notFound();
+
+export default async function CategoryId({
+  params,
+}: {
+  params: { categorySlug: string };
+}) {
+  const categorySlug = params.categorySlug;
+
+  const categoryRow = (
+    await db
+      .select()
+      .from(category)
+      .leftJoin(images, eq(category.imageId, images.id))
+      .where(eq(category.slug, categorySlug))
+  )[0];
+
+  if (!categoryRow) notFound();
+
+  const categoryId = categoryRow.category.id;
+
+  const subcategories = await db
+    .select()
+    .from(category)
+    .leftJoin(images, eq(category.imageId, images.id))
+    .where(eq(category.parentId, categoryId.toString()));
+
+  const subcategoriesWithImages = subcategories.map((row) => ({
+    ...row.category,
+    base64Image: toBase64Image(row.images?.image),
+  }));
+
+  if (subcategoriesWithImages.length > 0) {
+    return <CategoryList categoryRows={subcategoriesWithImages} />;
   }
-  const subcategories = db
-    .prepare(
-      `SELECT category.*, images.*
-     FROM category
-     LEFT JOIN images ON category.image_id = images.id
-     WHERE category.parent_id = ?`
-    )
-    .all(categoryRow.id.toString());
 
-  const subcategoryRowsWithBase64Images = subcategories.map((row: RowType) => {
-    const base64Image = row.image
-      ? Buffer.from(row.image).toString("base64")
-      : null;
+  const productRows = await db
+    .select()
+    .from(products)
+    .leftJoin(images, eq(products.imageId, images.id))
+    .where(eq(products.categoryId, categoryId));
 
-    return {
-      ...row,
-      base64Image: base64Image ? `data:image/jpeg;base64,${base64Image}` : null,
-    };
-  });
-  const productRows = db
-    .prepare(
-      `SELECT products.*,image AS image FROM products LEFT JOIN images ON products.image_id = images.id WHERE products.categoryId = ?`
-    )
-    .all(categoryRow.id.toString());
-  const productRowsWithBase64Images = productRows.map((row: RowType) => {
-    const base64Image = row.image
-      ? Buffer.from(row.image).toString("base64")
-      : null;
+  const productsWithImages = productRows.map((row) => ({
+    ...row.products,
+    base64Image: toBase64Image(row.images?.image),
+  }));
 
-    return {
-      ...row,
-      base64Image: base64Image ? `data:image/jpeg;base64,${base64Image}` : null,
-    };
-  });
-  return (
-    <div>
-      {subcategoryRowsWithBase64Images.length > 0 ? (
-        <CategoryList categoryRows={subcategoryRowsWithBase64Images} />
-      ) : (
-        <ProductList productRow={productRowsWithBase64Images} />
-      )}
-    </div>
-  );
+  return <ProductList productRow={productsWithImages} />;
 }

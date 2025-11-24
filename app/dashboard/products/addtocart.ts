@@ -1,48 +1,36 @@
 "use server";
 
 import db from "@/app/lib/db/db";
+import { cart } from "@/drizzle/schema";
+import { eq } from "drizzle-orm";
+
 
 export async function addToCart(productId: number, quantity: number) {
-  const existingItem = db
-    .prepare("SELECT * FROM cart WHERE product_id = ?")
-    .get(productId);
+  const existingItem = await db
+    .select()
+    .from(cart)
+    .where(eq(cart.productId, productId))
+    .get();
 
   if (existingItem) {
-    db.prepare("UPDATE cart SET quantity = ? WHERE product_id = ?").run(
-      quantity,
-      productId
-    );
+    await db
+      .update(cart)
+      .set({ quantity })
+      .where(eq(cart.productId, productId));
   } else {
-    db.prepare("INSERT INTO cart (product_id, quantity) VALUES (?, ?)").run(
-      productId,
-      quantity
-    );
+    await db.insert(cart).values({ productId, quantity });
   }
 
   return { success: true };
 }
 
+
 export async function getCartQuantity(productId: number) {
-  const item = db
-    .prepare("SELECT quantity FROM cart WHERE product_id = ?")
-    .get(productId);
+  const item = await db
+    .select({ quantity: cart.quantity })
+    .from(cart)
+    .where(eq(cart.productId, productId))
+    .get();
 
-  return item ? item.quantity : 0;
+  return item?.quantity ?? 0;
 }
-
-// export async function buyCartItems(cart: any[]) {
-//   const insert = db.prepare(`
-//     INSERT INTO orders (product_id, quantity, total_price)
-//     VALUES (?, ?, ?)
-//   `);
-
-//   const insertItem = db.transaction((items: any[]) => {
-//     items.map(item =>
-//       insert.run(item.id, item.qty, item.price * item.qty)
-//     );
-//   });
-
-//   insertItem(cart);
-
-//   return { success: true, message: "Items purchased successfully." };
-// }
