@@ -16,6 +16,7 @@ export default async function ProductForm() {
 
       const base64 = Buffer.from(row.image).toString("base64");
       const url = `data:${row.imageType};base64,${base64}`;
+
       return { id: row.id, url };
     })
     .filter(Boolean);

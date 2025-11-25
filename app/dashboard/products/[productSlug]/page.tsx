@@ -6,7 +6,7 @@ import { images, products } from "@/drizzle/schema";
 import db from "@/app/lib/db/db";
 
 export default async function ProductId({ params }: { params: any }) {
-  const productSlug = params.productSlug;
+ const { productSlug } = await params;
 
   const product = await db
     .select({

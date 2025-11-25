@@ -87,8 +87,19 @@ export async function UpdateProductForm(
 }
 
 export async function insertImage(image: File): Promise<number> {
-  const imageBuffer = Buffer.from(await image.arrayBuffer());
+  const arrayBuffer = await image.arrayBuffer();
+  const imageBuffer = Buffer.from(arrayBuffer);
   const imageType = image.type;
+
+  const existing = await db
+    .select()
+    .from(images)
+    .where(eq(images.image, imageBuffer))
+    .get();
+
+  if (existing) {
+    return existing.id;
+  }
 
   const result = await db
     .insert(images)

@@ -12,12 +12,8 @@ function toBase64Image(image: unknown): string | null {
   )}`;
 }
 
-export default async function CategoryId({
-  params,
-}: {
-  params: { categorySlug: string };
-}) {
-  const categorySlug = params.categorySlug;
+export default async function CategoryId({ params }: { params: any }) {
+  const { categorySlug } = await params;
 
   const categoryRow = (
     await db

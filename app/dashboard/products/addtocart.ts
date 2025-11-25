@@ -4,15 +4,14 @@ import db from "@/app/lib/db/db";
 import { cart } from "@/drizzle/schema";
 import { eq } from "drizzle-orm";
 
-
 export async function addToCart(productId: number, quantity: number) {
-  const existingItem = await db
+  const cartItem = await db
     .select()
     .from(cart)
     .where(eq(cart.productId, productId))
     .get();
 
-  if (existingItem) {
+  if (cartItem) {
     await db
       .update(cart)
       .set({ quantity })
@@ -23,7 +22,6 @@ export async function addToCart(productId: number, quantity: number) {
 
   return { success: true };
 }
-
 
 export async function getCartQuantity(productId: number) {
   const item = await db
