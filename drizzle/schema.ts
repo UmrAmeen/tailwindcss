@@ -26,7 +26,7 @@ export const products = sqliteTable("products", {
   id: integer().primaryKey(),
   name: text(),
   imageId: integer("image_id"),
-  categoryId: integer("category_id"),
+  categoryId: integer("categoryId"),
   price: integer(),
   description: text(),
   slug: text(),
@@ -46,7 +46,7 @@ export const orders = sqliteTable("orders", {
 });
 
 export const user = sqliteTable("user", {
-  id: integer().primaryKey().notNull(), // primary key added
+  id: integer().primaryKey().notNull(), 
   name: text().notNull(),
   email: text().notNull(),
   password: text().notNull(),

@@ -1,6 +1,6 @@
 import { sqliteTable, integer, text, blob } from "drizzle-orm/sqlite-core";
 
-// Users
+
 export const user = sqliteTable("user", {
   id: integer().primaryKey().notNull(),
   name: text().notNull(),
@@ -8,7 +8,7 @@ export const user = sqliteTable("user", {
   password: text().notNull(),
 });
 
-// Categories
+
 export const category = sqliteTable("category", {
   id: integer().primaryKey().notNull(),
   name: text().notNull(),
@@ -17,32 +17,31 @@ export const category = sqliteTable("category", {
   slug: text(),
 });
 
-// Images
+
 export const images = sqliteTable("images", {
   id: integer().primaryKey().notNull(),
   image: blob(),
   imageType: text(),
 });
 
-// Products
 export const products = sqliteTable("products", {
   id: integer().primaryKey().notNull(),
   name: text().notNull(),
   imageId: integer("image_id"),
-  categoryId: integer("category_id"),
+  categoryId: integer("categoryId"),
   price: integer().notNull(),
   description: text(),
   slug: text(),
 });
 
-// Cart
+
 export const cart = sqliteTable("cart", {
   id: integer().primaryKey().notNull(),
   productId: integer("product_id").notNull(),
   quantity: integer().notNull(),
 });
 
-// Orders
+
 export const orders = sqliteTable("orders", {
   id: integer().primaryKey().notNull(),
   productId: integer("product_id").notNull(),
