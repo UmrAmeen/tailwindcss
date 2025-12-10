@@ -10,10 +10,11 @@ import { sql } from "drizzle-orm";
 export const category = sqliteTable("category", {
   id: integer({ mode: "number" }).primaryKey({ autoIncrement: true }),
   name: text().notNull(),
-  parentId: text("parent_id"),
-  imageId: text("image_id"), 
+  parentId: integer("parent_id"), 
+  imageId: integer("image_id"),
   slug: text(),
 });
+
 
 
 export const images = sqliteTable("images", {

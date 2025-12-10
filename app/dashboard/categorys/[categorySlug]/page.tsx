@@ -31,7 +31,7 @@ export default async function CategoryId({ params }: { params: any }) {
     .select()
     .from(category)
     .leftJoin(images, eq(category.imageId, images.id))
-    .where(eq(category.parentId, categoryId.toString()));
+    .where(eq(category.parentId, categoryId));
 
   const subcategoriesWithImages = subcategories.map((row) => ({
     ...row.category,
