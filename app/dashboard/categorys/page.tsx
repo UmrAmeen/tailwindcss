@@ -3,7 +3,6 @@ import CategoryList from "./categoryList";
 import { category, images } from "@/drizzle/schema";
 import { eq, isNull } from "drizzle-orm";
 
-
 export default async function Categorys() {
   const categoryRows = await db
     .select()
