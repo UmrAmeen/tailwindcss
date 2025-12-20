@@ -6,7 +6,7 @@ import { user, images } from "@/drizzle/schema";
 import { eq } from "drizzle-orm";
 import db from "./lib/db/db";
 
-export async function CreateSignUpForm(_: any, formData: FormData) {
+export async function CreateSignUpForm(prevFormState: any, formData: FormData) {
   const name = formData.get("name")?.toString();
   const email = formData.get("email")?.toString();
   const password = formData.get("password")?.toString();

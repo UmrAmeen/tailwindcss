@@ -1,15 +1,13 @@
-import * as dotenv from 'dotenv';
-dotenv.config({ path: '.env.local' });
-
+import { config } from 'dotenv';
 import { defineConfig } from 'drizzle-kit';
 
-console.log('DB_URL:', process.env.DB_FILE_NAME);
+config({ path: '.env.local' });
 
 export default defineConfig({
-  out: './drizzle',
   schema: './app/lib/schema.ts',
-  dialect: 'sqlite',
+  out: './supabase/migrations',
+  dialect: 'postgresql',
   dbCredentials: {
-    url: process.env.DB_FILE_NAME!, 
+    url: process.env.DATABASE_URL!,
   },
 });
