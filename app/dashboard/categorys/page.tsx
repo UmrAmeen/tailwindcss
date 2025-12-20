@@ -19,6 +19,7 @@ export default async function Categorys() {
     console.error("Error fetching categories:", error);
     return <p>Error loading categories</p>;
   }
+  console.log("data", data);
 
   if (!data || data.length === 0) {
     return <p>No categories found.</p>;
