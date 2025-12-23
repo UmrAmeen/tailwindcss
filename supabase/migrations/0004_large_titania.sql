@@ -1,0 +1,2 @@
+ALTER TABLE "cart" ALTER COLUMN "id" SET MAXVALUE 10000;--> statement-breakpoint
+ALTER TABLE "user" ALTER COLUMN "id" SET MAXVALUE 10000;

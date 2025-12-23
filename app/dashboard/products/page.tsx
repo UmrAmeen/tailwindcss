@@ -1,28 +1,40 @@
 import { eq } from "drizzle-orm";
-import db from "@/app/lib/db/db";
-import { products, images } from "@/drizzle/schema";
+import { products, images } from "@/supabase/migrations/schema";
 import ProductList from "./productList";
+import { db } from "@/app/lib/db/database";
 
-function toBase64Image(image: unknown): string | null {
+
+function toBase64Image(image: Buffer | Uint8Array | null | undefined, type: string = "image/jpeg"): string | null {
   if (!image) return null;
-  return `data:image/jpeg;base64,${Buffer.from(image as Uint8Array).toString("base64")}`;
+  const base64 = Buffer.isBuffer(image) ? image.toString("base64") : Buffer.from(image).toString("base64");
+  return `data:${type};base64,${base64}`;
 }
 
 export default async function Products() {
+  
   const rows = await db
-    .select()
+    .select({
+      id: products.id,
+      name: products.name,
+      price: products.price,
+      slug: products.slug,
+      description: products.description,
+      image: images.image,
+      imageType: images.imageType,
+    })
     .from(products)
-    .leftJoin(images, eq(products.imageId, images.id));
+    .leftJoin(images, eq(images.id, products.imageId))
+    .execute(); 
 
-  const rowsWithBase64Images = rows.map((row) => {
-    const product = row.products;
-    const imageBuffer = row.images?.image;
-
-    return {
-      ...product,
-      base64Image: toBase64Image(imageBuffer),
-    };
-  });
+  
+  const rowsWithBase64Images = rows.map((row) => ({
+    id: row.id,
+    name: row.name,
+    price: row.price,
+    slug: row.slug,
+    description: row.description,
+    base64Image: toBase64Image(row.image, row.imageType || "image/jpeg"),
+  }));
 
   return (
     <div className="flex flex-wrap">

@@ -1,14 +1,14 @@
-
 import ProductIdCard from "../productIdCard";
 import { getCartQuantity } from "../addtocart";
 import { eq } from "drizzle-orm";
-import { images, products } from "@/drizzle/schema";
-import db from "@/app/lib/db/db";
+import { db } from "@/app/lib/db/database";
+import { images, products } from "@/supabase/migrations/schema";
 
-export default async function ProductId({ params }: { params: any }) {
- const { productSlug } = await params;
+export default async function ProductId({ params }: { params: { productSlug: string } }) {
+  const { productSlug } = params; 
 
-  const product = await db
+  
+  const rows = await db
     .select({
       id: products.id,
       name: products.name,
@@ -20,27 +20,30 @@ export default async function ProductId({ params }: { params: any }) {
     .from(products)
     .leftJoin(images, eq(images.id, products.imageId))
     .where(eq(products.slug, productSlug))
-    .get();
+    .execute(); 
 
-  if (!product) {
+  if (!rows || rows.length === 0) {
     return <p>No product found for slug: {productSlug}</p>;
   }
 
+  const product = rows[0]; 
+
+  
   const base64Image = product.image
-    ? `data:image/jpeg;base64,${Buffer.from(product.image as Uint8Array).toString(
-        "base64"
-      )}`
+    ? `data:image/jpeg;base64,${Buffer.from(product.image as Uint8Array).toString("base64")}`
     : null;
 
-  const { image, id, ...Product } = product;
-
-  const quantity = await getCartQuantity(id);
+  
+  const quantity = await getCartQuantity(product.id);
 
   const productWithImage = {
-    ...Product,
-    id,
+    id: product.id,
+    name: product.name,
+    description: product.description,
+    price: product.price,
     base64Image,
     slug: productSlug,
+    quantity,
   };
 
   return (
