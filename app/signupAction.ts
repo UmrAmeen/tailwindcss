@@ -1,14 +1,15 @@
 "use server";
-
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { user, images } from "@/drizzle/schema";
 import { eq } from "drizzle-orm";
-import db from "./lib/db/db";
+import { db } from "./lib/db/database";
+import { images, user } from "@/supabase/migrations/schema";
+import { supabase } from "./lib/supabaseClient";
 
 export async function CreateSignUpForm(prevFormState: any, formData: FormData) {
-  const name = formData.get("name")?.toString();
-  const email = formData.get("email")?.toString();
+  const name = formData.get("name")?.toString().trim();
+  const email = formData.get("email")?.toString().trim();
+
   const password = formData.get("password")?.toString();
   const confirmPassword = formData.get("confirmPassword")?.toString();
 
@@ -21,38 +22,81 @@ export async function CreateSignUpForm(prevFormState: any, formData: FormData) {
   }
 
   try {
-    await db.insert(user).values({ name, email, password });
+    const { data: authData, error: authError } = await supabase.auth.signUp({
+      email,
+      password,
+    });
+
+    if (authError) {
+      return { success: false, error: authError.message };
+    }
+
+    if (!authData.user) {
+     
+      return {
+        success: true,
+        error: "Signup successful! Please check your email to confirm.",
+      };
+    }
+    
+    try {
+      await db.insert(user).values({
+        auth_id: authData.user.id,
+        name,
+        email,
+      });
+    } catch (err) {
+      console.error("DB insert error:", err);
+      return { success: false, error: "Failed to save user in database." };
+    }
 
     return { success: true, error: "" };
-  } catch (error) {
-    console.error(error);
-    return { success: false, error: "User already exists or DB error." };
+  } catch (err) {
+    console.error("Signup error:", err);
+    return {
+      success: false,
+      error: "User creation failed. Maybe already exists.",
+    };
   }
 }
 
 export async function CreateLoginForm(formData: FormData) {
-  const email = formData.get("email")?.toString();
-  const password = formData.get("password")?.toString();
+  const email = formData.get("email")?.toString().trim();
+  const password = formData.get("password")?.toString().trim();
 
   if (!email || !password) {
     return { success: false, error: "Email and password are required." };
   }
 
-  const foundUser = await db
-    .select()
-    .from(user)
-    .where(eq(user.email, email))
-    .get();
+  const { data: authData, error: authError } =
+    await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
 
-  if (!foundUser || foundUser.password !== password) {
+  if (authError || !authData.user) {
     return { success: false, error: "Invalid email or password." };
   }
 
+  
+  const result = await db
+    .select()
+    .from(user)
+    .where(eq(user.auth_id, authData.user.id))
+    .execute();
+
+  const foundUser = result[0];
+
+  if (!foundUser) {
+    return { success: false, error: "User not found in DB." };
+  }
+
+  
   const cookieStore = await cookies();
-  cookieStore.set("userid", foundUser.name ?? "", {
+  cookieStore.set("userid", foundUser.name, {
     httpOnly: true,
     path: "/",
-    maxAge: 60 * 60 * 24,
+    maxAge: 60 * 60 * 24, 
   });
 
   redirect("/dashboard");
@@ -61,6 +105,7 @@ export async function CreateLoginForm(formData: FormData) {
 export async function CreateLogout() {
   const cookieStore = await cookies();
   cookieStore.delete("userid");
+  cookieStore.delete("token");
 
   redirect("/dashboard/loginForm");
 }
@@ -69,14 +114,13 @@ export async function insertImage(image: File): Promise<number> {
   const buffer = Buffer.from(await image.arrayBuffer());
   const type = image.type;
 
-  const result = await db
+  const [insertedImage] = await db
     .insert(images)
     .values({
       image: buffer,
       imageType: type,
     })
-    .returning({ id: images.id })
-    .get();
+    .returning({ id: images.id });
 
-  return result.id;
+  return insertedImage.id;
 }

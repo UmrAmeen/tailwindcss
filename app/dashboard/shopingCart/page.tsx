@@ -1,7 +1,7 @@
-import db from "@/app/lib/db/db";
+import { db } from "@/app/lib/db/database";
 import ShoppingCart from "./shopingCart";
-import { cart, images, products } from "@/drizzle/schema";
 import { eq } from "drizzle-orm";
+import { cart, images, products } from "@/supabase/migrations/schema";
 
 export default async function ShoppingCartPage() {
   const cartItems = await db
@@ -19,9 +19,7 @@ export default async function ShoppingCartPage() {
 
   const cartWithImages = cartItems.map((item) => {
     const base64Image = item.image
-      ? `data:image/jpeg;base64,${Buffer.from(
-          item.image as Uint8Array
-        ).toString("base64")}`
+      ? `data:image/jpeg;base64,${Buffer.from(item.image).toString("base64")}`
       : null;
 
     return {

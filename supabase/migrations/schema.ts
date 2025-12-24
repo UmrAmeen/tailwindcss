@@ -1,54 +1,94 @@
-import { pgTable, bigint, foreignKey, text, integer,customType } from "drizzle-orm/pg-core"
-import { sql } from "drizzle-orm"
-
+import {
+  pgTable,
+  bigint,
+  foreignKey,
+  text,
+  integer,
+  customType,
+  serial,
+  numeric,
+  uuid,
+} from "drizzle-orm/pg-core";
+import { sql } from "drizzle-orm";
 
 
 export const cart = pgTable("cart", {
-	// You can use { mode: "bigint" } if numbers are exceeding js number limitations
-	id: bigint({ mode: "number" }).primaryKey().generatedByDefaultAsIdentity({ name: "cart_id_seq", startWith: 1, increment: 1, minValue: 1, maxValue: 10000, cache: 1 }),
-	// You can use { mode: "bigint" } if numbers are exceeding js number limitations
-	productId: bigint("product_id", { mode: "number" }).notNull(),
-	// You can use { mode: "bigint" } if numbers are exceeding js number limitations
-	quantity: bigint({ mode: "number" }),
+  // You can use { mode: "bigint" } if numbers are exceeding js number limitations
+  id: bigint({ mode: "number" })
+    .primaryKey()
+    .generatedByDefaultAsIdentity({
+      name: "cart_id_seq",
+      startWith: 1,
+      increment: 1,
+      minValue: 1,
+      maxValue: 10000,
+      cache: 1,
+    }),
+  // You can use { mode: "bigint" } if numbers are exceeding js number limitations
+  productId: bigint("product_id", { mode: "number" }).notNull(),
+  // You can use { mode: "bigint" } if numbers are exceeding js number limitations
+  quantity: bigint({ mode: "number" }),
 });
 
-export const category = pgTable("category", {
-	// You can use { mode: "bigint" } if numbers are exceeding js number limitations
-	id: bigint({ mode: "number" }).primaryKey().generatedByDefaultAsIdentity({ name: "category_id_seq", startWith: 1, increment: 1, minValue: 1, maxValue: 10000, cache: 1 }),
-	name: text().notNull(),
-	// You can use { mode: "bigint" } if numbers are exceeding js number limitations
-	parentId: bigint("parent_id", { mode: "number" }),
-	// You can use { mode: "bigint" } if numbers are exceeding js number limitations
-	imageId: bigint("image_id", { mode: "number" }),
-	slug: text(),
-}, (table) => [
-	foreignKey({
-			columns: [table.imageId],
-			foreignColumns: [images.id],
-			name: "category_image_fk"
-		}),
-]);
+export const category = pgTable(
+  "category",
+  {
+    // You can use { mode: "bigint" } if numbers are exceeding js number limitations
+    id: bigint({ mode: "number" })
+      .primaryKey()
+      .generatedByDefaultAsIdentity({
+        name: "category_id_seq",
+        startWith: 1,
+        increment: 1,
+        minValue: 1,
+        maxValue: 10000,
+        cache: 1,
+      }),
+    name: text().notNull(),
+    // You can use { mode: "bigint" } if numbers are exceeding js number limitations
+    parentId: bigint("parent_id", { mode: "number" }),
+    // You can use { mode: "bigint" } if numbers are exceeding js number limitations
+    imageId: bigint("image_id", { mode: "number" }),
+    slug: text(),
+  },
+  (table) => [
+    foreignKey({
+      columns: [table.imageId],
+      foreignColumns: [images.id],
+      name: "category_image_fk",
+    }),
+  ]
+);
 
 export const products = pgTable("products", {
-	// You can use { mode: "bigint" } if numbers are exceeding js number limitations
-	id: bigint({ mode: "number" }).primaryKey().generatedByDefaultAsIdentity({ name: "products_id_seq", startWith: 1, increment: 1, minValue: 1, maxValue: 10000, cache: 1 }),
-	name: text().notNull(),
-	imageId: integer("image_id"),
-	categoryId: integer(),
-	price: text(),
-	description: text(),
-	slug: text(),
+  // You can use { mode: "bigint" } if numbers are exceeding js number limitations
+  id: bigint({ mode: "number" })
+    .primaryKey()
+    .generatedByDefaultAsIdentity({
+      name: "products_id_seq",
+      startWith: 1,
+      increment: 1,
+      minValue: 1,
+      maxValue: 10000,
+      cache: 1,
+    }),
+  name: text().notNull(),
+  imageId: integer("image_id"),
+  categoryId: integer(),
+  price: numeric("price"),
+  description: text(),
+  slug: text(),
 });
 
 export const user = pgTable("user", {
-	// You can use { mode: "bigint" } if numbers are exceeding js number limitations
-	id: bigint({ mode: "number" }).primaryKey().generatedByDefaultAsIdentity({ name: "user_id_seq", startWith: 1, increment: 1, minValue: 1, maxValue: 10000, cache: 1 }),
-	name: text().notNull(),
-	email: text(),
-	password: text(),
+  id: bigint({ mode: "number" })
+    .primaryKey()
+    .generatedByDefaultAsIdentity(),
+   auth_id: uuid("auth_id").unique(),
+  name: text().notNull(),
+  email: text(),
+  password: text(),
 });
-
-
 
 const bytea = customType<{ data: Buffer }>({
   dataType() {
@@ -57,7 +97,24 @@ const bytea = customType<{ data: Buffer }>({
 });
 
 export const images = pgTable("images", {
-  id: bigint("id", { mode: "number" }).primaryKey(),
+  id: bigint("id", { mode: "number" })
+    .primaryKey()
+    .generatedByDefaultAsIdentity({
+      name: "images_id_seq",
+      startWith: 1,
+      increment: 1,
+      minValue: 1,
+      maxValue: 100000,
+      cache: 1,
+    }),
   imageType: text("image_type").notNull(),
   image: bytea("image"),
+});
+
+
+export const orders = pgTable("orders", {
+  id: serial("id").primaryKey(),
+  productId: integer("product_id").notNull(),
+  quantity: integer("quantity").notNull(),
+  totalPrice: integer("total_price").notNull(),
 });

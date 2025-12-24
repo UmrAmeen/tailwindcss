@@ -4,10 +4,13 @@ import { eq } from "drizzle-orm";
 import { db } from "@/app/lib/db/database";
 import { images, products } from "@/supabase/migrations/schema";
 
-export default async function ProductId({ params }: { params: { productSlug: string } }) {
-  const { productSlug } = params; 
+export default async function ProductId({
+  params,
+}: {
+  params: { productSlug: string };
+}) {
+  const { productSlug } = await params;
 
-  
   const rows = await db
     .select({
       id: products.id,
@@ -20,20 +23,20 @@ export default async function ProductId({ params }: { params: { productSlug: str
     .from(products)
     .leftJoin(images, eq(images.id, products.imageId))
     .where(eq(products.slug, productSlug))
-    .execute(); 
+    .execute();
 
   if (!rows || rows.length === 0) {
     return <p>No product found for slug: {productSlug}</p>;
   }
 
-  const product = rows[0]; 
+  const product = rows[0];
 
-  
   const base64Image = product.image
-    ? `data:image/jpeg;base64,${Buffer.from(product.image as Uint8Array).toString("base64")}`
+    ? `data:image/jpeg;base64,${Buffer.from(
+        product.image as Uint8Array
+      ).toString("base64")}`
     : null;
 
-  
   const quantity = await getCartQuantity(product.id);
 
   const productWithImage = {

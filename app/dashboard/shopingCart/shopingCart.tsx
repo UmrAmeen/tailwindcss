@@ -1,21 +1,12 @@
 "use client";
-
+import { useState } from "react";
 import {
   addItem,
   buyCart,
   removeItem,
   decreaseItem,
 } from "../shopingCartAction";
-import { useState } from "react";
 
-interface RowType {
-  [key: string]: any;
-}
-interface CartItem {
-  price: number | null;
-  quantity: number;
-  [key: string]: any;
-}
 export default function ShoppingCart({ cart }: any) {
   const [loading, setLoading] = useState(false);
 
@@ -40,10 +31,10 @@ export default function ShoppingCart({ cart }: any) {
     setLoading(false);
   };
 
-  const total = cart.reduce((sum: number, item: CartItem) => {
-    const price = item.price ?? 0;
-    return sum + price * item.quantity;
-  }, 0);
+  const total = cart.reduce(
+    (sum:any, item:any) => sum + (item.price ? Number(item.price) : 0) * item.quantity,
+    0
+  );
 
   return (
     <div className="space-y-4">
@@ -51,8 +42,8 @@ export default function ShoppingCart({ cart }: any) {
         <p className="text-red-500 font-bold">Your cart is empty!!</p>
       ) : (
         <>
-          {cart.map((item: RowType) => {
-            const price = item.price ?? 0;
+          {cart.map((item:any) => {
+            const price = item.price ? Number(item.price) : 0;
             const productName = item.product_name ?? "Unknown Product";
 
             return (
@@ -93,7 +84,6 @@ export default function ShoppingCart({ cart }: any) {
                 <div className="flex-1 text-green-600 font-medium">
                   Price: ${price.toFixed(2)}
                 </div>
-
                 <div className="flex-1 text-green-600 font-medium">
                   Total: ${(price * item.quantity).toFixed(2)}
                 </div>

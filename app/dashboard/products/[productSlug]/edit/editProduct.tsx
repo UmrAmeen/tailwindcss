@@ -1,5 +1,6 @@
 "use client";
-import { UpdateProductForm } from "@/app/dashboard/productFormAction";
+
+import { updateProductForm } from "@/app/dashboard/productFormAction";
 import { useActionState, useState } from "react";
 import slugify from "slugify";
 
@@ -26,7 +27,7 @@ export default function EditProductForm({ categoryRows, product }: any) {
     setSlug(e.target.value);
   };
 
-  const [state, formAction, isPending] = useActionState(UpdateProductForm, {
+  const [state, formAction, isPending] = useActionState(updateProductForm, {
     success: false,
     error: "",
   });

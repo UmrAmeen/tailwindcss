@@ -5,7 +5,6 @@ import { notFound } from "next/navigation";
 import CategoryList from "../categoryList";
 import ProductList from "../../products/productList";
 
-// Convert image/base64 from Supabase to data URL
 function toBase64Image(
   image: Buffer | string | null | undefined,
   type: string | null | undefined
@@ -22,7 +21,6 @@ interface Params {
 export default async function CategoryPage({ params }: Params) {
   const { categorySlug } = await Promise.resolve(params);
 
-  
   const categoryData = await db
     .select({
       id: category.id,
@@ -35,14 +33,13 @@ export default async function CategoryPage({ params }: Params) {
     .from(category)
     .leftJoin(images, eq(images.id, category.imageId))
     .where(eq(category.slug, categorySlug))
-    .execute(); 
+    .execute();
 
   if (!categoryData || categoryData.length === 0) notFound();
 
   const mainCategory = categoryData[0];
   const categoryId = mainCategory.id;
 
-  
   const subcategoriesData = await db
     .select({
       id: category.id,
@@ -62,12 +59,10 @@ export default async function CategoryPage({ params }: Params) {
     base64Image: toBase64Image(row.image, row.imageType),
   }));
 
-  
   if (subcategoriesWithImages.length > 0) {
     return <CategoryList categoryRows={subcategoriesWithImages} />;
   }
 
-  
   const productsData = await db
     .select({
       id: products.id,

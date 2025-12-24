@@ -1,12 +1,11 @@
-import db from "@/app/lib/db/db";
+import { db } from "@/app/lib/db/database";
 import EditProductForm from "./editProduct";
-import { category, images, products } from "@/drizzle/schema";
 import { eq } from "drizzle-orm";
+import { category, images, products } from "@/supabase/migrations/schema";
 
 export default async function EditProduct({ params }: { params: any }) {
-  const productSlug = params.productSlug;
+  const { productSlug } = await params; 
 
- 
   const categoryRows = await db
     .select()
     .from(category)
@@ -25,7 +24,6 @@ export default async function EditProduct({ params }: { params: any }) {
     };
   });
 
-  
   const productRows = await db
     .select()
     .from(products)

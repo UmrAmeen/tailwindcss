@@ -1,9 +1,8 @@
-// app/products/productForm.tsx
 "use server";
 
+import { db } from "@/app/lib/db/database";
 import NewProductForm from "./newProductForm";
-import db from "@/app/lib/db/db";
-import { category, images } from "@/drizzle/schema";
+import { category, images } from "@/supabase/migrations/schema";
 
 export default async function ProductForm() {
   const categoryRows = await db.select().from(category);

@@ -1,19 +1,19 @@
+"use server";
 import SideBar from "./sidebar";
-import LoginForm from "./loginForm/loginForm";
-import { cookies } from "next/headers";
 import NavBar from "./navBar";
+import LoginForm from "./loginForm/loginForm";
+import { supabase } from "../lib/supabaseClient";
 
 export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const cookieStore = await cookies();
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
 
-  const userId = cookieStore.get("userid")?.value;
-  console.log("[layout].userid", userId);
-
-  if (!userId) {
+  if (!session) {
     return <LoginForm />;
   }
 
