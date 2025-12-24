@@ -32,6 +32,4 @@ export default async function CategoryPage() {
   );
 }
 
-// DATABASE_URL=postgresql://postgres:umar0766708388@db.vugvefacuygjeupjkmku.supabase.co:5432/postgres
-// NEXT_PUBLIC_SUPABASE_URL=https://vugvefacuygjeupjkmku.supabase.co
-// NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_MasCU7jcPQeyQ1qlWQAigA_MwVYguND
+

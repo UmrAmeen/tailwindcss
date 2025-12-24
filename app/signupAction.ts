@@ -32,13 +32,12 @@ export async function CreateSignUpForm(prevFormState: any, formData: FormData) {
     }
 
     if (!authData.user) {
-     
       return {
         success: true,
         error: "Signup successful! Please check your email to confirm.",
       };
     }
-    
+
     try {
       await db.insert(user).values({
         auth_id: authData.user.id,
@@ -78,7 +77,6 @@ export async function CreateLoginForm(formData: FormData) {
     return { success: false, error: "Invalid email or password." };
   }
 
-  
   const result = await db
     .select()
     .from(user)
@@ -91,12 +89,11 @@ export async function CreateLoginForm(formData: FormData) {
     return { success: false, error: "User not found in DB." };
   }
 
-  
   const cookieStore = await cookies();
   cookieStore.set("userid", foundUser.name, {
     httpOnly: true,
     path: "/",
-    maxAge: 60 * 60 * 24, 
+    maxAge: 60 * 60 * 24,
   });
 
   redirect("/dashboard");
@@ -105,8 +102,6 @@ export async function CreateLoginForm(formData: FormData) {
 export async function CreateLogout() {
   const cookieStore = await cookies();
   cookieStore.delete("userid");
-  cookieStore.delete("token");
-
   redirect("/dashboard/loginForm");
 }
 
