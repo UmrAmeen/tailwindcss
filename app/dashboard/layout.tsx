@@ -1,8 +1,10 @@
 "use server";
 import SideBar from "./sidebar";
 import NavBar from "./navBar";
-import LoginForm from "./loginForm/loginForm";
+
 import { supabase } from "../lib/supabaseClient";
+
+import Login from "../loginForm/page";
 
 export default async function DashboardLayout({
   children,
@@ -14,7 +16,7 @@ export default async function DashboardLayout({
   } = await supabase.auth.getSession();
 
   if (!session) {
-    return <LoginForm />;
+    return <Login />;
   }
 
   return (

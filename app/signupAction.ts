@@ -102,7 +102,7 @@ export async function CreateLoginForm(formData: FormData) {
 export async function CreateLogout() {
   const cookieStore = await cookies();
   cookieStore.delete("userid");
-  redirect("/dashboard/loginForm");
+  redirect("/loginForm");
 }
 
 export async function insertImage(image: File): Promise<number> {

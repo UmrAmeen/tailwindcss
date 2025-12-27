@@ -24,7 +24,7 @@ export default async function CategoryPage() {
       : null,
   }));
 
-  console.log("data");
+  
   return (
     <div>
       <CategoryList categoryRows={categoryRows} />
