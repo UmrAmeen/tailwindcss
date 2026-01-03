@@ -3,7 +3,6 @@ import NavBar from "./navBar";
 import { supabase } from "../lib/supabaseClient";
 import Login from "../loginForm/page";
 
-
 export default async function DashboardLayout({
   children,
 }: {

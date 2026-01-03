@@ -67,40 +67,41 @@ export async function CreateLoginForm(formData: FormData) {
     return { success: false, error: "Email and password are required." };
   }
 
-  const { data: authData, error: authError } =
-    await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
 
-  if (authError || !authData.user) {
-    return { success: false, error: "Invalid email or password." };
+  if (error || !data.user) {
+    return { success: false, error: "Invalid credentials." };
   }
 
   const result = await db
     .select()
     .from(user)
-    .where(eq(user.auth_id, authData.user.id))
+    .where(eq(user.auth_id, data.user.id))
     .execute();
 
   const foundUser = result[0];
+  const cookieStore = await cookies();
 
-  if (!foundUser) {
-    return { success: false, error: "User not found in DB." };
+ 
+  if (!foundUser.auth_id) {
+    throw new Error("User auth_id is null, cannot set cookie");
   }
 
-  const cookieStore = await cookies();
-  cookieStore.set("userid", foundUser.name, {
+  
+  cookieStore.set("userid", foundUser.auth_id, {
     httpOnly: true,
     path: "/",
-    maxAge: 60 * 60 * 24,
+    maxAge: 60 * 60 * 24, 
   });
 
   redirect("/dashboard");
 }
 
 export async function CreateLogout() {
-  const cookieStore = await cookies();
+  const cookieStore = await cookies(); 
   cookieStore.delete("userid");
   redirect("/loginForm");
 }

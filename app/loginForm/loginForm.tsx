@@ -2,11 +2,12 @@
 import { useState } from "react";
 import Link from "next/link";
 import { CreateLoginForm } from "@/app/signupAction";
+import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
   const [state, setState] = useState({ success: false, error: "" });
   const [isPending, setIsPending] = useState(false);
-
+  const router = useRouter();
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsPending(true);
@@ -18,7 +19,7 @@ export default function LoginForm() {
     setIsPending(false);
 
     if (result.success) {
-      window.location.href = "/dashboard";
+      router.push("/dashboard");
     }
   };
 

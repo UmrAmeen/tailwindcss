@@ -11,39 +11,35 @@ import {
 } from "drizzle-orm/pg-core";
 import { sql } from "drizzle-orm";
 
-
 export const cart = pgTable("cart", {
   // You can use { mode: "bigint" } if numbers are exceeding js number limitations
-  id: bigint({ mode: "number" })
-    .primaryKey()
-    .generatedByDefaultAsIdentity({
-      name: "cart_id_seq",
-      startWith: 1,
-      increment: 1,
-      minValue: 1,
-      maxValue: 10000,
-      cache: 1,
-    }),
+  id: bigint({ mode: "number" }).primaryKey().generatedByDefaultAsIdentity({
+    name: "cart_id_seq",
+    startWith: 1,
+    increment: 1,
+    minValue: 1,
+    maxValue: 10000,
+    cache: 1,
+  }),
   // You can use { mode: "bigint" } if numbers are exceeding js number limitations
   productId: bigint("product_id", { mode: "number" }).notNull(),
   // You can use { mode: "bigint" } if numbers are exceeding js number limitations
   quantity: bigint({ mode: "number" }),
+  userId: uuid("userId").notNull(),
 });
 
 export const category = pgTable(
   "category",
   {
     // You can use { mode: "bigint" } if numbers are exceeding js number limitations
-    id: bigint({ mode: "number" })
-      .primaryKey()
-      .generatedByDefaultAsIdentity({
-        name: "category_id_seq",
-        startWith: 1,
-        increment: 1,
-        minValue: 1,
-        maxValue: 10000,
-        cache: 1,
-      }),
+    id: bigint({ mode: "number" }).primaryKey().generatedByDefaultAsIdentity({
+      name: "category_id_seq",
+      startWith: 1,
+      increment: 1,
+      minValue: 1,
+      maxValue: 10000,
+      cache: 1,
+    }),
     name: text().notNull(),
     // You can use { mode: "bigint" } if numbers are exceeding js number limitations
     parentId: bigint("parent_id", { mode: "number" }),
@@ -62,16 +58,14 @@ export const category = pgTable(
 
 export const products = pgTable("products", {
   // You can use { mode: "bigint" } if numbers are exceeding js number limitations
-  id: bigint({ mode: "number" })
-    .primaryKey()
-    .generatedByDefaultAsIdentity({
-      name: "products_id_seq",
-      startWith: 1,
-      increment: 1,
-      minValue: 1,
-      maxValue: 10000,
-      cache: 1,
-    }),
+  id: bigint({ mode: "number" }).primaryKey().generatedByDefaultAsIdentity({
+    name: "products_id_seq",
+    startWith: 1,
+    increment: 1,
+    minValue: 1,
+    maxValue: 10000,
+    cache: 1,
+  }),
   name: text().notNull(),
   imageId: integer("image_id"),
   categoryId: integer(),
@@ -81,10 +75,8 @@ export const products = pgTable("products", {
 });
 
 export const user = pgTable("user", {
-  id: bigint({ mode: "number" })
-    .primaryKey()
-    .generatedByDefaultAsIdentity(),
-   auth_id: uuid("auth_id").unique(),
+  id: bigint({ mode: "number" }).primaryKey().generatedByDefaultAsIdentity(),
+  auth_id: uuid("auth_id").unique(),
   name: text().notNull(),
   email: text(),
   password: text(),
@@ -111,10 +103,10 @@ export const images = pgTable("images", {
   image: bytea("image"),
 });
 
-
 export const orders = pgTable("orders", {
   id: serial("id").primaryKey(),
   productId: integer("product_id").notNull(),
   quantity: integer("quantity").notNull(),
   totalPrice: integer("total_price").notNull(),
+   userId: uuid("userId").notNull(),
 });
