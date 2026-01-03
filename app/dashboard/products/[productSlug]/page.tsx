@@ -9,7 +9,7 @@ export default async function ProductId({
 }: {
   params: { productSlug: string };
 }) {
-  const { productSlug } =  params;
+  const { productSlug } = await params;
 
   const rows = await db
     .select({

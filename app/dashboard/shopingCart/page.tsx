@@ -12,7 +12,6 @@ export default async function ShoppingCartPage() {
       <p className="text-red-500 font-bold">Please log in to view your cart.</p>
     );
   }
-
   const cartItems = await db
     .select({
       id: cart.id,
