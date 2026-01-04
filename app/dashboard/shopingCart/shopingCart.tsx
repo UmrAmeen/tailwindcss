@@ -7,19 +7,29 @@ import {
   decreaseItem,
 } from "../shopingCartAction";
 
-export default function ShoppingCart({ cart }:any) {
+export default function ShoppingCart({ cart }: any) {
   const [loading, setLoading] = useState(false);
+  const [itemLoading, setItemLoading] = useState<number | null>(null);
 
   const handleAdd = async (cartId: number) => {
+    if (itemLoading !== null) return;
+    setItemLoading(cartId);
     await addItem(cartId);
+    setItemLoading(null);
   };
 
   const handleDecrease = async (cartId: number) => {
+    if (itemLoading !== null) return;
+    setItemLoading(cartId);
     await decreaseItem(cartId);
+    setItemLoading(null);
   };
 
   const handleRemove = async (cartId: number) => {
+    if (itemLoading !== null) return;
+    setItemLoading(cartId);
     await removeItem(cartId);
+    setItemLoading(null);
   };
 
   const handleBuy = async () => {
@@ -30,7 +40,7 @@ export default function ShoppingCart({ cart }:any) {
   };
 
   const total = cart.reduce(
-    (sum:any, item:any) => sum + Number(item.price) * item.quantity,
+    (sum: any, item: any) => sum + Number(item.price) * item.quantity,
     0
   );
 
@@ -40,8 +50,9 @@ export default function ShoppingCart({ cart }:any) {
         <p className="text-red-500 font-bold">Your cart is empty!!</p>
       ) : (
         <>
-          {cart.map((item:any) => {
+          {cart.map((item: any) => {
             const price = Number(item.price);
+            const disabled = itemLoading === item.id;
 
             return (
               <div
@@ -62,7 +73,7 @@ export default function ShoppingCart({ cart }:any) {
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => handleDecrease(item.id)}
-                    disabled={item.quantity <= 1}
+                    disabled={item.quantity <= 1 || disabled}
                     className="px-2 py-1 border rounded text-green-600 disabled:text-gray-500"
                   >
                     -
@@ -72,7 +83,8 @@ export default function ShoppingCart({ cart }:any) {
 
                   <button
                     onClick={() => handleAdd(item.id)}
-                    className="px-2 py-1 border rounded text-green-600"
+                    disabled={disabled}
+                    className="px-2 py-1 border rounded text-green-600 disabled:text-gray-500"
                   >
                     +
                   </button>
@@ -88,7 +100,8 @@ export default function ShoppingCart({ cart }:any) {
 
                 <button
                   onClick={() => handleRemove(item.id)}
-                  className="text-red-600 font-semibold"
+                  disabled={disabled}
+                  className="text-red-600 font-semibold disabled:text-gray-400"
                 >
                   Remove
                 </button>
@@ -104,7 +117,7 @@ export default function ShoppingCart({ cart }:any) {
             <button
               onClick={handleBuy}
               disabled={loading}
-              className="bg-purple-600 text-white px-4 py-2 rounded"
+              className="bg-purple-600 text-white px-4 py-2 rounded disabled:bg-gray-400"
             >
               {loading ? "Processing..." : "Buy Now"}
             </button>
@@ -114,3 +127,4 @@ export default function ShoppingCart({ cart }:any) {
     </div>
   );
 }
+
