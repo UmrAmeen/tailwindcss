@@ -17,6 +17,7 @@ export default function AddToCartButton({
 
   const handleIncrease = () => {
     setQuantity((q) => q + 1);
+    if (loading !== null) return;
   };
 
   const handleAddToCart = async () => {
