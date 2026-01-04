@@ -1,5 +1,5 @@
 import ShoppingCart from "./shopingCart";
-import { eq } from "drizzle-orm";
+import { asc, eq } from "drizzle-orm";
 import { db } from "@/app/lib/db/database";
 import { cart, images, products } from "@/supabase/migrations/schema";
 import { getUserIdFromCookie } from "@/app/lib/getUserId";
@@ -24,6 +24,7 @@ export default async function ShoppingCartPage() {
     .leftJoin(products, eq(cart.productId, products.id))
     .leftJoin(images, eq(products.imageId, images.id))
     .where(eq(cart.userId, userId))
+    .orderBy(asc(cart.id))
     .execute();
 
   const cartWithImages = cartItems.map((item) => ({
