@@ -1,5 +1,5 @@
 import Link from "next/link";
-import AddToCartButton from "./[productSlug]/addToCartButton";
+import AddToCartButton from "./addToCartButton";
 
 export default function ProductIdCard({ row, quantity }: any) {
   return (

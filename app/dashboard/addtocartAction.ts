@@ -9,7 +9,6 @@ export async function addToCart(productId: number, quantity: number) {
   if (!userId) {
     return { success: false, error: "Not logged in" };
   }
-
   const existing = await db
     .select()
     .from(cart)

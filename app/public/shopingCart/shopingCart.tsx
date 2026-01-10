@@ -6,6 +6,7 @@ import {
   removeItem,
   decreaseItem,
 } from "../shopingCartAction";
+import Link from "next/link";
 
 export default function ShoppingCart({ cart }: any) {
   const [loading, setLoading] = useState(false);
@@ -47,7 +48,14 @@ export default function ShoppingCart({ cart }: any) {
   return (
     <div className="space-y-4">
       {cart.length === 0 ? (
-        <p className="text-red-500 font-bold">Your cart is empty!!</p>
+        <>
+          <p className="text-red-500 font-bold">Your cart is empty!!</p>
+          <Link href="/public/products">
+            <button className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded shadow">
+              Go to products
+            </button>
+          </Link>
+        </>
       ) : (
         <>
           {cart.map((item: any) => {
@@ -90,9 +98,7 @@ export default function ShoppingCart({ cart }: any) {
                   </button>
                 </div>
 
-                <div className="text-green-600">
-                  Price: ${price.toFixed(2)}
-                </div>
+                <div className="text-green-600">Price: ${price.toFixed(2)}</div>
 
                 <div className="text-green-600">
                   Total: ${(price * item.quantity).toFixed(2)}
@@ -127,4 +133,3 @@ export default function ShoppingCart({ cart }: any) {
     </div>
   );
 }
-

@@ -1,9 +1,9 @@
 import { AlignJustify, Download, LogOut } from "feather-icons-react";
 import ShoppingCartButton from "./shopingCartButton";
-import { getCartTotalQuantity } from "./shopingCartAction";
-import { CreateLogout } from "../signupAction";
+import { getCartTotalQuantity } from "../public/shopingCartAction";
+import { CreateLogout } from "../public/signupAction";
 
-export default async function NavBar() {
+export default async function DashboardNavBar() {
   const totalQuantity = await getCartTotalQuantity();
 
   return (

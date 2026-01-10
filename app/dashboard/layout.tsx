@@ -1,7 +1,8 @@
 import SideBar from "./sidebar";
-import NavBar from "./navBar";
+import NavBar from "./dashboardNavBar";
 import { supabase } from "../lib/supabaseClient";
-import Login from "../loginForm/page";
+import Login from "../public/login/page";
+import DashboardNavBar from "./dashboardNavBar";
 
 export default async function DashboardLayout({
   children,
@@ -18,7 +19,7 @@ export default async function DashboardLayout({
 
   return (
     <div className="h-screen flex flex-col">
-      <NavBar />
+      <DashboardNavBar />
 
       <div className="flex flex-1">
         <div className="w-64 bg-gradient-to-r from-blue-400 to-purple-400 text-white">

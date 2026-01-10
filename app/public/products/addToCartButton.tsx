@@ -1,7 +1,8 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { addToCart } from "../addtocart";
+import { addToCart } from "@/app/dashboard/addtocartAction";
+
 
 export default function AddToCartButton({
   productId,

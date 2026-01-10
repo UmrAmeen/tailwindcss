@@ -1,8 +1,9 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
-import { CreateLoginForm } from "@/app/signupAction";
+
 import { useRouter } from "next/navigation";
+import { CreateLoginForm } from "../signupAction";
 
 export default function LoginForm() {
   const [state, setState] = useState({ success: false, error: "" });
@@ -17,15 +18,11 @@ export default function LoginForm() {
     setState(result);
 
     setIsPending(false);
-
-    if (result.success) {
-      router.push("/dashboard");
-    }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen text-white">
-      <div className="bg-white p-8 rounded-lg shadow-md w-96 text-black">
+    <div className="flex  items-center justify-center min-h-screen text-white">
+      <div className="bg-white border border-black p-8 rounded-lg shadow-md w-96 text-black">
         <h1 className="text-2xl font-bold text-center mb-6">Login</h1>
 
         {state.error && <div className="text-red-500 mb-4">{state.error}</div>}

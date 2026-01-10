@@ -2,7 +2,7 @@ import ProductIdCard from "../productIdCard";
 import { eq } from "drizzle-orm";
 import { db } from "@/app/lib/db/database";
 import { images, products } from "@/supabase/migrations/schema";
-import { getCartQuantity } from "../addtocart";
+import { getCartQuantity } from "../../../dashboard/addtocartAction";
 
 export default async function ProductId({
   params,
@@ -37,7 +37,6 @@ export default async function ProductId({
       ).toString("base64")}`
     : null;
 
- 
   const quantity = await getCartQuantity(product.id);
 
   const productWithImage = {

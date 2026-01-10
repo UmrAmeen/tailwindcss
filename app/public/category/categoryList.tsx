@@ -4,8 +4,8 @@ import CategoryCard from "./categoryCard";
 export default function CategoryList({ categoryRows }: any) {
   return (
     <div className="flex flex-wrap">
-      {categoryRows.map((row:any) => (
-        <Link key={row.id} href={`/dashboard/categorys/${row.slug}`}>
+      {categoryRows.map((row: any) => (
+        <Link key={row.id} href={`/public/category/${row.slug}`}>
           <div>
             <CategoryCard row={row} />
           </div>

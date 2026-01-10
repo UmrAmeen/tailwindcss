@@ -1,17 +1,22 @@
 import { eq } from "drizzle-orm";
 import { products, images } from "@/supabase/migrations/schema";
-import ProductList from "./productList";
+
 import { db } from "@/app/lib/db/database";
+import ProductList from "./productList";
 
 
-function toBase64Image(image: Buffer | Uint8Array | null | undefined, type: string = "image/jpeg"): string | null {
+function toBase64Image(
+  image: Buffer | Uint8Array | null | undefined,
+  type: string = "image/jpeg"
+): string | null {
   if (!image) return null;
-  const base64 = Buffer.isBuffer(image) ? image.toString("base64") : Buffer.from(image).toString("base64");
+  const base64 = Buffer.isBuffer(image)
+    ? image.toString("base64")
+    : Buffer.from(image).toString("base64");
   return `data:${type};base64,${base64}`;
 }
 
 export default async function Products() {
-  
   const rows = await db
     .select({
       id: products.id,
@@ -24,9 +29,8 @@ export default async function Products() {
     })
     .from(products)
     .leftJoin(images, eq(images.id, products.imageId))
-    .execute(); 
+    .execute();
 
-  
   const rowsWithBase64Images = rows.map((row) => ({
     id: row.id,
     name: row.name,

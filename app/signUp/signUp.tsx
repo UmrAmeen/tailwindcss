@@ -2,7 +2,7 @@
 
 import { useActionState } from "react";
 import Link from "next/link";
-import { CreateSignUpForm } from "../signupAction";
+import { CreateSignUpForm } from "../public/signupAction";
 
 export default function SignUp() {
   const [state, formAction, isPending] = useActionState(CreateSignUpForm, {
@@ -13,7 +13,9 @@ export default function SignUp() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-200 to-purple-200 p-6">
       <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 space-y-6">
-        <h1 className="text-3xl font-bold text-center text-blue-700">Create Account</h1>
+        <h1 className="text-3xl font-bold text-center text-blue-700">
+          Create Account
+        </h1>
 
         {state.success && (
           <div className="p-3 text-green-800 bg-green-100 rounded-lg text-center font-medium">
@@ -66,7 +68,10 @@ export default function SignUp() {
 
         <p className="text-center text-gray-500">
           Already have an account?{" "}
-          <Link href="/dashboard" className="text-blue-600 font-semibold hover:underline">
+          <Link
+            href="/"
+            className="text-blue-600 font-semibold hover:underline"
+          >
             Log in
           </Link>
         </p>

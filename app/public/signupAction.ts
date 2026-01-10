@@ -2,9 +2,11 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { eq } from "drizzle-orm";
-import { db } from "./lib/db/database";
+
 import { images, user } from "@/supabase/migrations/schema";
-import { supabase } from "./lib/supabaseClient";
+import { supabase } from "../lib/supabaseClient";
+import { db } from "../lib/db/database";
+
 
 export async function CreateSignUpForm(prevFormState: any, formData: FormData) {
   const name = formData.get("name")?.toString().trim();
@@ -85,25 +87,23 @@ export async function CreateLoginForm(formData: FormData) {
   const foundUser = result[0];
   const cookieStore = await cookies();
 
- 
   if (!foundUser.auth_id) {
     throw new Error("User auth_id is null, cannot set cookie");
   }
 
-  
   cookieStore.set("userid", foundUser.auth_id, {
     httpOnly: true,
     path: "/",
-    maxAge: 60 * 60 * 24, 
+    maxAge: 60 * 60 * 24,
   });
 
-  redirect("/dashboard");
+  redirect("/public/shopingCart");
 }
 
 export async function CreateLogout() {
-  const cookieStore = await cookies(); 
+  const cookieStore = await cookies();
   cookieStore.delete("userid");
-  redirect("/loginForm");
+  redirect("/public/login");
 }
 
 export async function insertImage(image: File): Promise<number> {

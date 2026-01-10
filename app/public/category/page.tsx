@@ -2,6 +2,8 @@ import { db } from "@/app/lib/db/database";
 import { category, images } from "@/supabase/migrations/schema";
 import { sql } from "drizzle-orm";
 import CategoryList from "./categoryList";
+import SideBar from "@/app/dashboard/sidebar";
+import CategorySidebar from "./categorySidebar";
 
 export default async function CategoryPage() {
   const data = await db
@@ -24,12 +26,9 @@ export default async function CategoryPage() {
       : null,
   }));
 
-  
   return (
     <div>
       <CategoryList categoryRows={categoryRows} />
     </div>
   );
 }
-
-
