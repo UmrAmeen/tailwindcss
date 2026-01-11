@@ -20,7 +20,7 @@ interface Params {
 }
 
 export default async function CategoryPage({ params }: Params) {
-  const { categorySlug } = params;
+  const { categorySlug } = await params;
 
   const sidebarCategories = await db
     .select({

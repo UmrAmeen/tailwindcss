@@ -4,7 +4,6 @@ import { products, images } from "@/supabase/migrations/schema";
 import { db } from "@/app/lib/db/database";
 import ProductList from "./productList";
 
-
 function toBase64Image(
   image: Buffer | Uint8Array | null | undefined,
   type: string = "image/jpeg"

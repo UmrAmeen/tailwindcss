@@ -11,9 +11,9 @@ export default async function DashboardNavBar() {
       <button className="relative flex text-black px-2 py-1 duration-300">
         <Download className="mr-2" size={24} />
       </button>
-      <a href="/dashboard/shopingCart">
+     {/* < a href="/public/shopingCart">
         <ShoppingCartButton totalQuantity={totalQuantity} />
-      </a>
+      </a> */}
       <form action={CreateLogout}>
         <button
           type="submit"

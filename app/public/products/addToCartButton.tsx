@@ -1,8 +1,6 @@
 "use client";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { addToCart } from "@/app/dashboard/addtocartAction";
-
 
 export default function AddToCartButton({
   productId,
@@ -14,7 +12,6 @@ export default function AddToCartButton({
   const [quantity, setQuantity] = useState(cartQuantity || 1);
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState("");
-  const router = useRouter();
 
   const handleIncrease = () => {
     setQuantity((q) => q + 1);
@@ -27,7 +24,6 @@ export default function AddToCartButton({
 
     if (result.success) {
       setStatus("Cart updated");
-      router.refresh();
     } else {
       setStatus("Error");
     }
