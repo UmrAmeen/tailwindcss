@@ -1,38 +1,45 @@
 "use client";
 import { useState } from "react";
-import { addToCart } from "@/app/dashboard/addtocartAction";
+
+import { useRouter } from "next/navigation";
+import { addToCart } from "./addtocartAction";
 
 export default function AddToCartButton({
   productId,
   cartQuantity,
+  onRequireLogin,
 }: {
   productId: number;
   cartQuantity: number;
+  onRequireLogin: () => void;
 }) {
   const [quantity, setQuantity] = useState(cartQuantity || 1);
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState("");
-
+  const router = useRouter();
   const handleIncrease = () => {
+     console.log("handleIncrease called");
+    if (loading) return;
     setQuantity((q) => q + 1);
-    if (loading !== null) return;
   };
 
   const handleAddToCart = async () => {
     setLoading(true);
+    setStatus("");
     const result = await addToCart(productId, quantity);
 
-    if (result.success) {
-      setStatus("Cart updated");
-    } else {
-      setStatus("Error");
+    if (!result.success) {
+      onRequireLogin();
+      setLoading(false);
+      return;
     }
-
+    setStatus("Cart updated");
+    router.refresh();
     setLoading(false);
   };
 
   return (
-    <div className="mt-3 space-x-3 flex items-center">
+    <div className="mt-3 flex items-center space-x-3">
       <span className="font-medium text-gray-800">Quantity: {quantity}</span>
 
       <button
@@ -50,7 +57,6 @@ export default function AddToCartButton({
       >
         {loading ? "Submitting..." : "Add to Cart"}
       </button>
-
       {status && <p className="text-sm">{status}</p>}
     </div>
   );

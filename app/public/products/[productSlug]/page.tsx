@@ -2,7 +2,8 @@ import ProductIdCard from "../productIdCard";
 import { eq } from "drizzle-orm";
 import { db } from "@/app/lib/db/database";
 import { images, products } from "@/supabase/migrations/schema";
-import { getCartQuantity } from "../../../dashboard/addtocartAction";
+import { getCartQuantity } from "../addtocartAction";
+
 
 export default async function ProductId({
   params,
