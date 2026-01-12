@@ -7,19 +7,16 @@ export default function AddToCartButton({
   productId,
   cartQuantity,
   login,
-}: {
-  productId: number;
-  cartQuantity: number;
-  login: () => void;
-}) {
+}: any) {
   const [quantity, setQuantity] = useState(cartQuantity || 1);
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState("");
   const router = useRouter();
+
   const handleIncrease = () => {
-     console.log("handleIncrease called");
+    console.log("handleIncrease called");
     if (loading) return;
-    setQuantity((q) => q + 1);
+    setQuantity((q: any) => q + 1);
   };
 
   const handleAddToCart = async () => {
@@ -40,7 +37,6 @@ export default function AddToCartButton({
   return (
     <div className="mt-3 flex items-center space-x-3">
       <span className="font-medium text-gray-800">Quantity: {quantity}</span>
-
       <button
         onClick={handleIncrease}
         disabled={loading}
@@ -48,7 +44,6 @@ export default function AddToCartButton({
       >
         +
       </button>
-
       <button
         onClick={handleAddToCart}
         disabled={loading}
