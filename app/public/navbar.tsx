@@ -1,4 +1,3 @@
-
 import { LogOut, ShoppingCart } from "feather-icons-react";
 import Link from "next/link";
 import { CreateLogout } from "./signupAction";
@@ -11,16 +10,18 @@ export default async function Navbar() {
       <div className="text-xl font-bold">MyStore</div>
 
       <div className="flex items-center space-x-4">
-        <div className="relative">
+        <div className="relative inline-block">
           <Link href="/public/shopingCart">
-            <button className=" relative p-2 rounded-full hover:bg-gray-200 transition">
+            <button className="relative p-2 rounded-full hover:bg-gray-200 transition">
               <ShoppingCart className="h-6 w-6 text-gray-800" />
-              <span className="absolute -top-1 -right-1 bg-gray-900 text-white text-xs w-4 h-4 flex items-center justify-center rounded-full">
+
+              <span className="absolute -top-1 -right-1 bg-gray-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full border-2 border-white">
                 {totalQuantity}
               </span>
             </button>
           </Link>
         </div>
+
         <form action={CreateLogout}>
           <button
             type="submit"
