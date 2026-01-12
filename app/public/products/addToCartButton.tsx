@@ -1,17 +1,16 @@
 "use client";
 import { useState } from "react";
-
 import { useRouter } from "next/navigation";
 import { addToCart } from "./addtocartAction";
 
 export default function AddToCartButton({
   productId,
   cartQuantity,
-  onRequireLogin,
+  login,
 }: {
   productId: number;
   cartQuantity: number;
-  onRequireLogin: () => void;
+  login: () => void;
 }) {
   const [quantity, setQuantity] = useState(cartQuantity || 1);
   const [loading, setLoading] = useState(false);
@@ -29,7 +28,7 @@ export default function AddToCartButton({
     const result = await addToCart(productId, quantity);
 
     if (!result.success) {
-      onRequireLogin();
+      login();
       setLoading(false);
       return;
     }

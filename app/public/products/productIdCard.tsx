@@ -32,7 +32,7 @@ export default function ProductIdCard({ row, quantity }: any) {
         <AddToCartButton
           productId={row.id}
           cartQuantity={quantity}
-          onRequireLogin={() => setShowLogin(true)}
+          login={() => setShowLogin(true)}
         />
       </div>
     </div>
