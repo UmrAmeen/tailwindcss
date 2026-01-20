@@ -3,7 +3,6 @@ import { useState } from "react";
 import AddToCartButton from "./addToCartButton";
 import Login from "@/app/[login]/page";
 
-
 export default function ProductIdCard({ row, quantity }: any) {
   const [showLogin, setShowLogin] = useState(false);
 

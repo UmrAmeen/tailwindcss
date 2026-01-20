@@ -21,7 +21,7 @@ export async function handlePayment(_formData: FormData) {
     .where(eq(cart.userId, userId));
 
   if (cartItems.length === 0) {
-    redirect("/public");
+    redirect("/public/category");
   }
 
   await db.transaction(async (tx) => {
