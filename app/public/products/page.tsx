@@ -1,6 +1,5 @@
 import { eq } from "drizzle-orm";
 import { products, images } from "@/supabase/migrations/schema";
-
 import { db } from "@/app/lib/db/database";
 import ProductList from "./productList";
 

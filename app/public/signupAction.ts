@@ -97,13 +97,13 @@ export async function CreateLoginForm(formData: FormData) {
     maxAge: 60 * 60 * 24,
   });
 
-  redirect("/public/shopingCart");
+  redirect("/shopingCart");
 }
 
 export async function CreateLogout() {
   const cookieStore = await cookies();
   cookieStore.delete("userid");
-  redirect("/public/login");
+  redirect("/login");
 }
 
 export async function insertImage(image: File): Promise<number> {

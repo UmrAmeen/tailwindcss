@@ -1,7 +1,8 @@
 "use client";
 import { useState } from "react";
 import AddToCartButton from "./addToCartButton";
-import Login from "../login/page";
+import Login from "@/app/[login]/page";
+
 
 export default function ProductIdCard({ row, quantity }: any) {
   const [showLogin, setShowLogin] = useState(false);

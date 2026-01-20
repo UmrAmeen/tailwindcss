@@ -12,7 +12,6 @@ import {
 import { sql } from "drizzle-orm";
 
 export const cart = pgTable("cart", {
-  // You can use { mode: "bigint" } if numbers are exceeding js number limitations
   id: bigint({ mode: "number" }).primaryKey().generatedByDefaultAsIdentity({
     name: "cart_id_seq",
     startWith: 1,
@@ -21,9 +20,9 @@ export const cart = pgTable("cart", {
     maxValue: 10000,
     cache: 1,
   }),
-  // You can use { mode: "bigint" } if numbers are exceeding js number limitations
+
   productId: bigint("product_id", { mode: "number" }).notNull(),
-  // You can use { mode: "bigint" } if numbers are exceeding js number limitations
+
   quantity: bigint({ mode: "number" }),
   userId: uuid("userId").notNull(),
 });
@@ -31,7 +30,6 @@ export const cart = pgTable("cart", {
 export const category = pgTable(
   "category",
   {
-    // You can use { mode: "bigint" } if numbers are exceeding js number limitations
     id: bigint({ mode: "number" }).primaryKey().generatedByDefaultAsIdentity({
       name: "category_id_seq",
       startWith: 1,
@@ -41,9 +39,9 @@ export const category = pgTable(
       cache: 1,
     }),
     name: text().notNull(),
-    // You can use { mode: "bigint" } if numbers are exceeding js number limitations
+
     parentId: bigint("parent_id", { mode: "number" }),
-    // You can use { mode: "bigint" } if numbers are exceeding js number limitations
+
     imageId: bigint("image_id", { mode: "number" }),
     slug: text(),
   },
@@ -53,11 +51,10 @@ export const category = pgTable(
       foreignColumns: [images.id],
       name: "category_image_fk",
     }),
-  ]
+  ],
 );
 
 export const products = pgTable("products", {
-  // You can use { mode: "bigint" } if numbers are exceeding js number limitations
   id: bigint({ mode: "number" }).primaryKey().generatedByDefaultAsIdentity({
     name: "products_id_seq",
     startWith: 1,
@@ -108,5 +105,15 @@ export const orders = pgTable("orders", {
   productId: integer("product_id").notNull(),
   quantity: integer("quantity").notNull(),
   totalPrice: integer("total_price").notNull(),
-   userId: uuid("userId").notNull(),
+  userId: uuid("userId").notNull(),
+});
+
+export const checkoutSessions = pgTable("checkout_sessions", {
+  id: serial("id").primaryKey(),
+  userId: uuid("userId").notNull(),
+  fullName: text("full_name").notNull(),
+  address: text("address").notNull(),
+  postcode: text("postcode").notNull(),
+  phone: text("phone").notNull(),
+  createdAt: integer("created_at").default(sql`EXTRACT(EPOCH FROM NOW())::int`),
 });

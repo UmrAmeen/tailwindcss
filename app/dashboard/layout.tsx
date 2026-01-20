@@ -1,8 +1,9 @@
 import SideBar from "./sidebar";
 import NavBar from "./dashboardNavBar";
 import { supabase } from "../lib/supabaseClient";
-import Login from "../public/login/page";
+
 import DashboardNavBar from "./dashboardNavBar";
+import Login from "../[login]/page";
 
 export default async function DashboardLayout({
   children,

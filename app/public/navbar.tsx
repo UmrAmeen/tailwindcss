@@ -8,10 +8,9 @@ export default async function Navbar() {
   return (
     <div className="flex h-16 items-center justify-between px-6 bg-orange-500 shadow">
       <div className="text-xl font-bold">MyStore</div>
-
       <div className="flex items-center space-x-4">
         <div className="relative inline-block">
-          <Link href="/public/shopingCart">
+          <Link href="/shopingCart">
             <button className="relative p-2 rounded-full hover:bg-gray-200 transition">
               <ShoppingCart className="h-6 w-6 text-gray-800" />
 

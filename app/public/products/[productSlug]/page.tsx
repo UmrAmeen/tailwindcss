@@ -4,7 +4,6 @@ import { db } from "@/app/lib/db/database";
 import { images, products } from "@/supabase/migrations/schema";
 import { getCartQuantity } from "../addtocartAction";
 
-
 export default async function ProductId({
   params,
 }: {
@@ -34,7 +33,7 @@ export default async function ProductId({
 
   const base64Image = product.image
     ? `data:image/jpeg;base64,${Buffer.from(
-        product.image as Uint8Array
+        product.image as Uint8Array,
       ).toString("base64")}`
     : null;
 

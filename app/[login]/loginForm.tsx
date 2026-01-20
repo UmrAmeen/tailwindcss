@@ -2,13 +2,12 @@
 import { useState } from "react";
 import Link from "next/link";
 
-import { useRouter } from "next/navigation";
-import { CreateLoginForm } from "../signupAction";
+import { CreateLoginForm } from "../public/signupAction";
 
 export default function LoginForm() {
   const [state, setState] = useState({ success: false, error: "" });
   const [isPending, setIsPending] = useState(false);
-  const router = useRouter();
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsPending(true);

@@ -3,7 +3,8 @@ import { asc, eq } from "drizzle-orm";
 import { db } from "@/app/lib/db/database";
 import { cart, images, products } from "@/supabase/migrations/schema";
 import { getUserIdFromCookie } from "@/app/lib/getUserId";
-import LoginForm from "../login/loginForm";
+import LoginForm from "@/app/[login]/loginForm";
+
 
 export default async function ShoppingCartPage() {
   const userId = await getUserIdFromCookie();
