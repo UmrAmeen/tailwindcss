@@ -23,7 +23,8 @@
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-native-feather": "^1.1.2",
-    "slugify": "^1.6.6"
+    "slugify": "^1.6.6",
+    "stripe": "^20.2.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

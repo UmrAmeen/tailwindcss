@@ -1,10 +1,22 @@
+"use client";
+import { useState } from "react";
 import { handlePayment } from "./paymentAction";
 
 export default function PaymentForm({ billing, cartItems }: any) {
+  const [loading, setLoading] = useState(false);
+
+  const onSubmit = async (e: any) => {
+    e.preventDefault();
+    setLoading(true);
+
+    await handlePayment();
+    setLoading(false);
+  };
+
   return (
-    <div className="min-h-screen bg-gray-400 from-purple-50 to-white flex items-center justify-center px-4 py-10">
+    <div className="min-h-screen bg-gray-400 flex items-center justify-center px-4 py-10">
       <form
-        action={handlePayment}
+        onSubmit={onSubmit}
         className="w-full max-w-xl p-8 bg-white rounded-2xl shadow-2xl space-y-8"
       >
         <h1 className="text-3xl font-extrabold text-purple-700 text-center">
@@ -46,9 +58,12 @@ export default function PaymentForm({ billing, cartItems }: any) {
 
         <button
           type="submit"
-          className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 rounded-xl shadow-md transition-all transform hover:scale-105"
+          disabled={loading}
+          className={`w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 rounded-xl shadow-md transition-all transform hover:scale-105 ${
+            loading ? "opacity-50 cursor-not-allowed" : ""
+          }`}
         >
-          Pay Now
+          {loading ? "Processing..." : "Pay Now"}
         </button>
       </form>
     </div>

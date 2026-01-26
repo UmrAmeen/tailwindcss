@@ -1,4 +1,5 @@
 import Navbar from "./navbar";
+import ThemeContextProvider from "./ThemeContext";
 
 export default function PublicLayout({
   children,
@@ -6,12 +7,11 @@ export default function PublicLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen flex flex-col">
-      <Navbar />
-
-      <main className="flex-1 p-4 overflow-auto bg-white ">
-        {children}
-      </main>
-    </div>
+    <ThemeContextProvider>
+      <div className="min-h-screen bg-white text-black dark:bg-black dark:text-white transition-colors duration-300">
+        <Navbar />
+        <main className="flex-1 p-4">{children}</main>
+      </div>
+    </ThemeContextProvider>
   );
 }

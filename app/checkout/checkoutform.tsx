@@ -11,7 +11,9 @@ export default function CheckoutFormPage() {
       </h2>
 
       <input
+        type="text"
         name="fullName"
+        required
         placeholder="Full Name"
         className="w-full border border-purple-400 focus:border-purple-500 focus:ring-1 focus:ring-purple-300 p-3 rounded-lg transition-all"
       />
@@ -19,18 +21,24 @@ export default function CheckoutFormPage() {
       <textarea
         name="address"
         placeholder="Address"
+        required
         className="w-full border border-purple-400 focus:border-purple-500 focus:ring-1 focus:ring-purple-300 p-3 rounded-lg transition-all"
         rows={3}
       />
 
       <input
+        type="text"
         name="postcode"
+        required
         placeholder="Postcode"
         className="w-full border border-purple-400 focus:border-purple-500 focus:ring-1 focus:ring-purple-300 p-3 rounded-lg transition-all"
       />
 
       <input
+        type="tel"
         name="phone"
+        title="Phone number should be 10 digits"
+        required
         placeholder="Phone"
         className="w-full border border-purple-400 focus:border-purple-500 focus:ring-1 focus:ring-purple-300 p-3 rounded-lg transition-all"
       />
