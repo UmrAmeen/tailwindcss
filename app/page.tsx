@@ -1,9 +1,13 @@
-export default function Page() {
+import CategoryPage from "./public/category/page";
+import PublicLayout from "./public/layout";
+
+export default function HomePage() {
   return (
-    <div className="bg-green-900 m-5 p-5">
-      <h1 className="text-3xl text-pink-500 text-center font-bold">
-        𝓜𝓘𝓛𝓛𝓘𝓞𝓝𝓢 𝓞𝓕 𝓑𝓡𝓐𝓝𝓓𝓢
+    <PublicLayout>
+      <h1 className="text-2xl text-center font-semibold uppercase tracking-wide text-gray-800">
+        Category
       </h1>
-    </div>
+      <CategoryPage />
+    </PublicLayout>
   );
 }

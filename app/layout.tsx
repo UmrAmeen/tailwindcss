@@ -1,6 +1,5 @@
-// app/layout.tsx or app/layout.js
 import "./globals.css";
-import SideBar from "./sidebar";
+import React from "react";
 
 export default function RootLayout({
   children,
@@ -9,14 +8,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
-        <div className="flex">
-          <div className="w-54 h-screen bg-gray-600 text-white top-0 left-0 ">
-            <SideBar />
-          </div>
-          <main>{children}</main>
-        </div>
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
