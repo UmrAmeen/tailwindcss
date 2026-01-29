@@ -30,13 +30,7 @@ export async function handlePayment() {
   }
 
   const lineItems = cartItems.map((item) => {
-<<<<<<< HEAD
-    if (!item.price) {
-      throw new Error("Product price missing");
-    }
-=======
     if (!item.price) throw new Error("Product price missing");
->>>>>>> c2686dc32079c84c7b6c1fb99fed578dda6519f9
 
     return {
       price_data: {
