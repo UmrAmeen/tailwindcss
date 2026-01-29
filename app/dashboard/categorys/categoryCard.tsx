@@ -6,4 +6,3 @@ export default function CategoryCard({ row }: any) {
     </div>
   );
 }
-``

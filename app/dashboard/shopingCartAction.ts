@@ -1,56 +1,68 @@
 "use server";
 
 import db from "@/app/lib/db/db";
+import { cart, orders } from "@/drizzle/schema";
+import { eq, sql } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
-import { cookies } from "next/headers";
 
 const CART_PATH = "/dashbord/shoppingCart";
 
 export async function addItem(cartId: number) {
-  db.prepare("UPDATE cart SET quantity = quantity + 1 WHERE id = ?").run(
-    cartId
-  );
+  await db
+    .update(cart)
+    .set({ quantity: sql`${cart.quantity} + 1` })
+    .where(eq(cart.id, cartId));
+
   revalidatePath(CART_PATH);
 }
 
 export async function decreaseItem(cartId: number) {
-  const { quantity } = db
-    .prepare("SELECT quantity FROM cart WHERE id = ?")
-    .get(cartId);
-  if (quantity > 1) {
-    db.prepare("UPDATE cart SET quantity = quantity - 1 WHERE id = ?").run(
-      cartId
-    );
-    revalidatePath(CART_PATH);
-  }
-}
+  const item = await db
+    .select({ quantity: cart.quantity })
+    .from(cart)
+    .where(eq(cart.id, cartId))
+    .get();
 
-export async function removeItem(cartId: number) {
-  db.prepare("DELETE FROM cart WHERE id = ?").run(cartId);
+  if (item && (item.quantity ?? 0) > 1) {
+    await db
+      .update(cart)
+      .set({ quantity: sql`${cart.quantity} - 1` })
+      .where(eq(cart.id, cartId));
+  }
+
   revalidatePath(CART_PATH);
 }
 
-export async function buyCart(cart: any[]) {
-  const insert = db.prepare(`
-    INSERT INTO orders (product_id, quantity, total_price)
-    VALUES (?, ?, ?)
-  `);
+export async function removeItem(cartId: number) {
+  await db.delete(cart).where(eq(cart.id, cartId));
+  revalidatePath(CART_PATH);
+}
 
-  const insertItem = db.transaction((items: any[]) => {
-    for (const item of items) {
-      insert.run(item.id, item.quantity, item.price * item.quantity);
+export async function buyCart(cartItems: any[]) {
+  await db.transaction(async (tx) => {
+    for (const item of cartItems) {
+      await tx.insert(orders).values({
+        productId: item.id,
+        quantity: item.quantity,
+        totalPrice: item.price * item.quantity,
+      });
     }
+
+    await tx.delete(cart);
   });
 
-  insertItem(cart);
-  db.prepare("DELETE FROM cart").run();
   revalidatePath(CART_PATH);
 
   return { success: true, message: "Items purchased successfully." };
 }
 
 export async function getCartTotalQuantity() {
-  const row = db.prepare("SELECT SUM(quantity) as total FROM cart").get();
-  return row.total || 0;
+  const result = await db
+    .select({
+      total: sql<number>`SUM(${cart.quantity})`,
+    })
+    .from(cart)
+    .get();
+
+  return result?.total ?? 0;
 }
