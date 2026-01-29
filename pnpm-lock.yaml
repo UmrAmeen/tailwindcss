@@ -53,9 +53,12 @@ importers:
       slugify:
         specifier: ^1.6.6
         version: 1.6.6
+<<<<<<< HEAD
       stripe:
         specifier: ^20.2.0
         version: 20.2.0(@types/node@20.19.25)
+=======
+>>>>>>> c2686dc32079c84c7b6c1fb99fed578dda6519f9
     devDependencies:
       '@eslint/eslintrc':
         specifier: ^3
@@ -84,6 +87,12 @@ importers:
       eslint-config-next:
         specifier: 15.5.3
         version: 15.5.3(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)
+<<<<<<< HEAD
+=======
+      stripe:
+        specifier: ^20.2.0
+        version: 20.2.0(@types/node@20.19.25)
+>>>>>>> c2686dc32079c84c7b6c1fb99fed578dda6519f9
       tailwindcss:
         specifier: ^4.1.13
         version: 4.1.17
@@ -2772,6 +2781,10 @@ packages:
 
   libsql@0.5.22:
     resolution: {integrity: sha512-NscWthMQt7fpU8lqd7LXMvT9pi+KhhmTHAJWUB/Lj6MWa0MKFv0F2V4C6WKKpjCVZl0VwcDz4nOI3CyaT1DDiA==}
+<<<<<<< HEAD
+=======
+    cpu: [x64, arm64, wasm32, arm]
+>>>>>>> c2686dc32079c84c7b6c1fb99fed578dda6519f9
     os: [darwin, linux, win32]
 
   lighthouse-logger@1.4.2:

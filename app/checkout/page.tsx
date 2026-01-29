@@ -6,6 +6,10 @@ export default function CheckoutPage() {
     <div className="min-h-screen bg-gradient-to-b from-purple-50 to-white py-10 px-4">
       <h1 className="text-4xl font-extrabold text-purple-700 mb-10 text-center">
         Checkout
+<<<<<<< HEAD
+=======
+        
+>>>>>>> c2686dc32079c84c7b6c1fb99fed578dda6519f9
       </h1>
 
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
